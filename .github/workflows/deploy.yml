@@ -1,0 +1,65 @@
+# .github/workflows/deploy.yml
+name: Deploy Verbitsky Systems Website
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup deployment environment
+      run: |
+        echo "🚀 Preparing deployment for Verbitsky Systems..."
+        
+        # Create deployment package
+        mkdir -p deploy
+        
+        # Copy website files (excluding development files)
+        cp -r css js php index.html robots.txt .htaccess deploy/ 2>/dev/null || true
+        
+        # Create logs directory
+        mkdir -p deploy/logs
+        echo "Logs directory created" > deploy/logs/.gitkeep
+        
+        # Verify files exist
+        echo "📁 Files to deploy:"
+        find deploy -type f | head -20
+        
+    - name: Deploy to cPanel via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./deploy/
+        server-dir: /public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.env
+          **/README.md
+          **/.github/**
+          **/logs/*.log
+        
+    - name: Verify deployment
+      run: |
+        echo "✅ Deployment completed successfully!"
+        echo "🌐 Website URL: https://verbitskysystems.com"
+        echo "⏰ Deployed at: $(date)"
+        
+        # Optional: Test if website is accessible
+        echo "🔍 Testing website accessibility..."
+        response=$(curl -s -o /dev/null -w "%{http_code}" https://verbitskysystems.com || echo "000")
+        if [ "$response" = "200" ]; then
+          echo "✅ Website is accessible (HTTP $response)"
+        else
+          echo "⚠️  Website returned HTTP $response (may take a few minutes to propagate)"
+        fi
