@@ -110,9 +110,17 @@ function handleInitialRouting() {
         '/contact': 'contact'
     };
     
-    const pageId = pageMap[path] || 'home';
-    console.log('Routing to page:', pageId); // Debug log
+    const pageId = pageMap[path];
     
+    // If route doesn't exist, redirect to home
+    if (!pageId) {
+        console.log('Invalid route, redirecting to home');
+        history.replaceState({page: 'home'}, '', '/');
+        showPageByRoute('home');
+        return;
+    }
+    
+    console.log('Routing to page:', pageId); // Debug log
     showPageByRoute(pageId);
 }
 
