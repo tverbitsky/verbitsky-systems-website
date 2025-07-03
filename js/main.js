@@ -1,4 +1,4 @@
-// Verbitsky Systems - Enhanced Main JavaScript
+// Verbitsky Systems - Main JavaScript
 
 // Page navigation
 function showPage(pageId) {
@@ -8,20 +8,17 @@ function showPage(pageId) {
     });
     
     // Show selected page
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.classList.add('active');
-    }
+    document.getElementById(pageId).classList.add('active');
     
     // Update nav links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
     
-    // Set active nav link based on page
-    const activeLink = document.querySelector(`a[onclick*="showPage('${pageId}')"]`);
-    if (activeLink && activeLink.classList.contains('nav-link')) {
-        activeLink.classList.add('active');
+    // Find and activate the correct nav link
+    const navLink = document.querySelector(`.nav-link[href="#${pageId}"]`);
+    if (navLink) {
+        navLink.classList.add('active');
     }
     
     // Close mobile menu if open
@@ -31,61 +28,84 @@ function showPage(pageId) {
     window.scrollTo(0, 0);
 }
 
-// Mobile menu functionality
+// Mobile menu toggle
 function toggleMobileMenu() {
-    const navLinks = document.getElementById('navLinks');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
     
-    if (navLinks && mobileMenuBtn && mobileMenuOverlay) {
-        navLinks.classList.toggle('active');
-        mobileMenuBtn.classList.toggle('active');
-        mobileMenuOverlay.classList.toggle('active');
-        
-        // Prevent body scroll when menu is open
-        if (navLinks.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
-        }
-    }
-}
-
-function closeMobileMenu() {
-    const navLinks = document.getElementById('navLinks');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    mobileMenu.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+    mobileNavOverlay.classList.toggle('active');
     
-    if (navLinks && mobileMenuBtn && mobileMenuOverlay) {
-        navLinks.classList.remove('active');
-        mobileMenuBtn.classList.remove('active');
-        mobileMenuOverlay.classList.remove('active');
+    // Prevent body scroll when menu is open
+    if (mobileNav.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
         document.body.style.overflow = '';
     }
 }
 
-// Chat functionality
-let messageCount = 1;
-const chatInput = document.getElementById('chatInput');
-const chatMessages = document.getElementById('chatMessages');
-
-// Auto-resize textarea
-if (chatInput) {
-    chatInput.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-    });
-
-    // Send on Enter
-    chatInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-        }
-    });
+// Close mobile menu
+function closeMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+    
+    mobileMenu.classList.remove('active');
+    mobileNav.classList.remove('active');
+    mobileNavOverlay.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
+// Chat sidebar toggle
+function toggleChatSidebar() {
+    const sidebar = document.querySelector('.chat-sidebar');
+    sidebar.classList.toggle('active');
+}
+
+// Chat functionality
+let messageCount = 1;
+let sessionStartTime = Date.now();
+
+// Update session time
+function updateSessionTime() {
+    const elapsed = Date.now() - sessionStartTime;
+    const minutes = Math.floor(elapsed / 60000);
+    const seconds = Math.floor((elapsed % 60000) / 1000);
+    const sessionTimeEl = document.getElementById('sessionTime');
+    if (sessionTimeEl) {
+        sessionTimeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+}
+
+// Start session timer
+setInterval(updateSessionTime, 1000);
+
+// Initialize chat
+document.addEventListener('DOMContentLoaded', function() {
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Auto-resize textarea
+    if (chatInput) {
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Send on Enter
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+});
+
 function insertPrompt(prompt) {
+    const chatInput = document.getElementById('chatInput');
     if (chatInput) {
         chatInput.value = prompt;
         chatInput.focus();
@@ -94,7 +114,49 @@ function insertPrompt(prompt) {
     }
 }
 
+// Typing animation function
+function typeMessage(element, text, speed = 30) {
+    let index = 0;
+    const textElement = element.querySelector('.message-text');
+    textElement.innerHTML = '<span class="typing-text"></span><span class="typing-cursor"></span>';
+    
+    const typingText = textElement.querySelector('.typing-text');
+    const cursor = textElement.querySelector('.typing-cursor');
+    
+    function type() {
+        if (index < text.length) {
+            // Handle line breaks
+            if (text.substr(index, 2) === '\n\n') {
+                typingText.innerHTML += '<br><br>';
+                index += 2;
+            } else if (text[index] === '\n') {
+                typingText.innerHTML += '<br>';
+                index++;
+            } else {
+                typingText.textContent += text[index];
+                index++;
+            }
+            
+            // Scroll to bottom
+            const chatMessages = document.getElementById('chatMessages');
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            setTimeout(type, speed);
+        } else {
+            // Remove cursor when done
+            cursor.remove();
+        }
+    }
+    
+    type();
+}
+
 function sendMessage() {
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+    
     if (!chatInput || !chatMessages) return;
     
     const message = chatInput.value.trim();
@@ -105,7 +167,9 @@ function sendMessage() {
     userMessage.className = 'message user';
     userMessage.innerHTML = `
         <div class="message-avatar">You</div>
-        <div class="message-content">${escapeHtml(message)}</div>
+        <div class="message-content">
+            <div class="message-text">${message}</div>
+        </div>
     `;
     chatMessages.appendChild(userMessage);
 
@@ -123,7 +187,7 @@ function sendMessage() {
     // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // Simulate AI response
+    // Simulate AI response with typing animation
     setTimeout(() => {
         const aiMessage = document.createElement('div');
         aiMessage.className = 'message';
@@ -133,9 +197,15 @@ function sendMessage() {
         
         aiMessage.innerHTML = `
             <div class="message-avatar ai">AI</div>
-            <div class="message-content">${response}</div>
+            <div class="message-content">
+                <div class="message-text"></div>
+            </div>
         `;
         chatMessages.appendChild(aiMessage);
+        
+        // Type the response
+        typeMessage(aiMessage, response);
+        
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }, 1000);
 }
@@ -144,59 +214,15 @@ function generateResponse(message) {
     const lowerMessage = message.toLowerCase();
     
     if (lowerMessage.includes('plc') && lowerMessage.includes('hmi')) {
-        return `For PLC-HMI communication issues, let's diagnose systematically:
-
-1. **Check physical connections** - Ensure all cables are properly seated
-2. **Verify network settings** - IP addresses, subnet masks must match
-3. **Test ping connectivity** - Can the HMI ping the PLC?
-4. **Review communication drivers** - Ensure correct driver and version
-
-Common causes: IP conflicts, cable issues, or driver mismatches. 
-
-What error messages are you seeing on the HMI?`;
+        return `For PLC-HMI communication issues, let's diagnose systematically:\n\n1. **Check physical connections** - Ensure all cables are properly seated\n2. **Verify network settings** - IP addresses, subnet masks must match\n3. **Test ping connectivity** - Can the HMI ping the PLC?\n4. **Review communication drivers** - Ensure correct driver and version\n\nCommon causes: IP conflicts, cable issues, or driver mismatches.\n\nWhat error messages are you seeing on the HMI?`;
     } else if (lowerMessage.includes('motor') && lowerMessage.includes('overheat')) {
-        return `Motor overheating requires immediate attention. Check these items:
-
-1. **Ambient temperature** - Is cooling adequate?
-2. **Load conditions** - Verify motor isn't overloaded
-3. **VFD parameters** - Check acceleration/deceleration times
-4. **Mechanical issues** - Listen for bearing noise
-
-Safety first: Ensure proper lockout/tagout before inspection.
-
-What's the motor's rated capacity versus actual load?`;
+        return `Motor overheating requires immediate attention. Check these items:\n\n1. **Ambient temperature** - Is cooling adequate?\n2. **Load conditions** - Verify motor isn't overloaded\n3. **VFD parameters** - Check acceleration/deceleration times\n4. **Mechanical issues** - Listen for bearing noise\n\nSafety first: Ensure proper lockout/tagout before inspection.\n\nWhat's the motor's rated capacity versus actual load?`;
     } else if (lowerMessage.includes('safety') || lowerMessage.includes('e-stop')) {
-        return `Safety system reset issues are critical. Follow this sequence:
-
-1. **Verify all E-stops** are pulled out/reset
-2. **Check safety relay** status LEDs
-3. **Review safety circuit** continuity
-4. **Inspect door switches** and light curtains
-
-The safety system requires all conditions cleared before reset.
-
-Are there any specific fault codes on the safety relay?`;
+        return `Safety system reset issues are critical. Follow this sequence:\n\n1. **Verify all E-stops** are pulled out/reset\n2. **Check safety relay** status LEDs\n3. **Review safety circuit** continuity\n4. **Inspect door switches** and light curtains\n\nThe safety system requires all conditions cleared before reset.\n\nAre there any specific fault codes on the safety relay?`;
     } else if (lowerMessage.includes('sensor')) {
-        return `For sensor diagnostic issues:
-
-1. **Check power supply** - Verify correct voltage
-2. **Inspect wiring** - Look for damage or interference
-3. **Test with multimeter** - Measure output signal
-4. **Review mounting** - Ensure proper alignment
-
-Environmental factors like EMI or temperature can affect readings.
-
-What type of sensor and what's the expected vs actual output?`;
+        return `For sensor diagnostic issues:\n\n1. **Check power supply** - Verify correct voltage\n2. **Inspect wiring** - Look for damage or interference\n3. **Test with multimeter** - Measure output signal\n4. **Review mounting** - Ensure proper alignment\n\nEnvironmental factors like EMI or temperature can affect readings.\n\nWhat type of sensor and what's the expected vs actual output?`;
     } else {
-        return `I understand you're experiencing: "${escapeHtml(message)}"
-
-To provide the most accurate troubleshooting guidance, I need a bit more information:
-- Equipment make/model
-- Error codes or alarms present
-- When the issue started
-- Any recent changes to the system
-
-This helps me give you specific, actionable solutions. What additional details can you provide?`;
+        return `I understand you're experiencing: "${message}"\n\nTo provide the most accurate troubleshooting guidance, I need a bit more information:\n• Equipment make/model\n• Error codes or alarms present\n• When the issue started\n• Any recent changes to the system\n\nThis helps me give you specific, actionable solutions. What additional details can you provide?`;
     }
 }
 
@@ -219,6 +245,20 @@ window.addEventListener('scroll', () => {
             nav.style.backdropFilter = 'none';
             nav.style.boxShadow = 'none';
         }
+    }
+});
+
+// Close mobile menu on window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        closeMobileMenu();
+    }
+});
+
+// Close mobile menu on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeMobileMenu();
     }
 });
 
@@ -252,23 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
             handleFiles(e.target.files);
         });
     }
-
-    // Initialize lazy loading for images
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.src; // Trigger load
-                    img.classList.add('loaded');
-                    imageObserver.unobserve(img);
-                }
-            });
-        });
-
-        lazyImages.forEach(img => imageObserver.observe(img));
-    }
 });
 
 function handleFiles(files) {
@@ -300,11 +323,11 @@ function displayFileQueue() {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
         fileItem.innerHTML = `
-            <span class="file-name">${escapeHtml(file.name)}</span>
+            <span class="file-name">${file.name}</span>
             <span class="file-size">${formatFileSize(file.size)}</span>
             <button class="file-remove" onclick="removeFile(${index})">×</button>
-            <div class="upload-progress">
-                <div class="upload-progress-bar"></div>
+            <div class="upload-progress" style="display: none;">
+                <div class="upload-progress-bar" style="width: 0%"></div>
             </div>
         `;
         fileListContainer.appendChild(fileItem);
@@ -333,7 +356,6 @@ function openUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
         modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -341,7 +363,6 @@ function closeUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
         modal.classList.remove('active');
-        document.body.style.overflow = '';
         selectedFiles = [];
         displayFileQueue();
         const uploadCategory = document.getElementById('uploadCategory');
@@ -364,36 +385,31 @@ function startUpload() {
         const progressBar = item.querySelector('.upload-progress');
         const progressFill = item.querySelector('.upload-progress-bar');
         
-        if (progressBar && progressFill) {
-            setTimeout(() => {
-                progressBar.style.display = 'block';
-                let progress = 0;
+        setTimeout(() => {
+            progressBar.style.display = 'block';
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 30;
+                if (progress > 100) progress = 100;
+                progressFill.style.width = progress + '%';
                 
-                const interval = setInterval(() => {
-                    progress += Math.random() * 30;
-                    if (progress > 100) progress = 100;
-                    progressFill.style.width = progress + '%';
-                    
-                    if (progress === 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            item.style.opacity = '0.5';
-                            const fileName = item.querySelector('.file-name');
-                            if (fileName && !fileName.textContent.includes('✓')) {
-                                fileName.textContent += ' ✓';
-                            }
-                        }, 300);
-                    }
-                }, 300);
-            }, index * 200);
-        }
+                if (progress === 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        item.style.opacity = '0.5';
+                        item.querySelector('.file-name').innerHTML += ' ✓';
+                    }, 300);
+                }
+            }, 300);
+        }, index * 200);
     });
     
     // Close modal after all uploads
     setTimeout(() => {
         closeUploadModal();
-        // In a real application, you would refresh the document list here
-        alert('Documents uploaded successfully!');
+        // Refresh document list
+        location.reload();
     }, selectedFiles.length * 1000 + 1000);
 }
 
@@ -451,13 +467,6 @@ async function handleContactSubmit(event) {
     event.preventDefault();
     
     const formData = new FormData(event.target);
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    
-    // Disable submit button
-    if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.innerHTML = 'Sending... <span>→</span>';
-    }
     
     try {
         const response = await fetch('/php/contact-handler.php', {
@@ -468,7 +477,7 @@ async function handleContactSubmit(event) {
         const result = await response.json();
         
         if (result.success) {
-            alert('Message sent successfully! We\'ll get back to you within 24 hours.');
+            alert('Message sent successfully!');
             event.target.reset();
         } else {
             alert('Error: ' + result.error);
@@ -485,43 +494,5 @@ async function handleContactSubmit(event) {
         const mailtoLink = `mailto:tyler@verbitskysystems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         
         window.location.href = mailtoLink;
-    } finally {
-        // Re-enable submit button
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.innerHTML = 'Send Message <span>→</span>';
-        }
     }
 }
-
-// Utility function to escape HTML
-function escapeHtml(text) {
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text.replace(/[&<>"']/g, m => map[m]);
-}
-
-// Handle window resize
-let resizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        // Close mobile menu on desktop resize
-        if (window.innerWidth > 768) {
-            closeMobileMenu();
-        }
-    }, 250);
-});
-
-// Page transition effects
-document.addEventListener('DOMContentLoaded', () => {
-    // Add loaded class to body
-    setTimeout(() => {
-        document.body.classList.add('loaded');
-    }, 100);
-});
