@@ -686,7 +686,6 @@
         
         function handleRouting() {
             const path = window.location.pathname;
-            const hash = window.location.hash;
             
             // Map paths to page IDs
             const routes = {
@@ -699,8 +698,8 @@
                 '/contact': 'contact'
             };
             
-            // Get page ID from path or hash
-            let pageId = routes[path] || routes[hash.replace('#', '/')] || 'home';
+            // Get page ID from path
+            let pageId = routes[path] || 'home';
             
             // Show the correct page
             showPageByRoute(pageId);
