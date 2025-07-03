@@ -55,8 +55,14 @@ function showPageByRoute(pageId) {
     window.scrollTo(0, 0);
 }
 
-// Handle navigation clicks
+// Initialize routing system
 document.addEventListener('DOMContentLoaded', function() {
+    // Initial page load routing
+    handleInitialRouting();
+    
+    // Handle browser back/forward
+    window.addEventListener('popstate', handleInitialRouting);
+    
     // Add click handlers to navigation links
     document.querySelectorAll('.nav-link, .nav-cta').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -89,6 +95,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function handleInitialRouting() {
+    const path = window.location.pathname;
+    const pageMap = {
+        '/': 'home',
+        '/home': 'home',
+        '/about': 'about',
+        '/ai-assistant': 'ai-assistant',
+        '/knowledge-base': 'knowledge-base',
+        '/support': 'support',
+        '/contact': 'contact'
+    };
+    
+    const pageId = pageMap[path] || 'home';
+    showPageByRoute(pageId);
+}
 
 // Legacy showPage function for backward compatibility
 function showPage(pageId) {
