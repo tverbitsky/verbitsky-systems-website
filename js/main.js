@@ -98,7 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function handleInitialRouting() {
     const path = window.location.pathname;
-    console.log('Current path:', path); // Debug log
+    console.log('=== ROUTING DEBUG ===');
+    console.log('Current path:', path);
+    console.log('Current URL:', window.location.href);
     
     const pageMap = {
         '/': 'home',
@@ -111,6 +113,11 @@ function handleInitialRouting() {
     };
     
     const pageId = pageMap[path];
+    console.log('Mapped page ID:', pageId);
+    
+    // Check if elements exist
+    const targetPage = document.getElementById(pageId || 'home');
+    console.log('Target page element found:', !!targetPage);
     
     // If route doesn't exist, redirect to home
     if (!pageId) {
@@ -120,7 +127,7 @@ function handleInitialRouting() {
         return;
     }
     
-    console.log('Routing to page:', pageId); // Debug log
+    console.log('Routing to page:', pageId);
     showPageByRoute(pageId);
 }
 
