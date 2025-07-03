@@ -15,13 +15,40 @@ function showPage(pageId) {
         link.classList.remove('active');
     });
     
-    // Set active nav link if event exists
-    if (event && event.target) {
-        event.target.classList.add('active');
+    // Find and activate the correct nav link
+    const navLink = document.querySelector(`.nav-link[href="#${pageId}"]`);
+    if (navLink) {
+        navLink.classList.add('active');
     }
     
     // Scroll to top
     window.scrollTo(0, 0);
+}
+
+// Mobile menu toggle
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    mobileMenu.classList.toggle('active');
+    mobileNav.classList.toggle('active');
+    
+    // Prevent body scroll when menu is open
+    if (mobileNav.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
+
+// Close mobile menu
+function closeMobileMenu() {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    mobileMenu.classList.remove('active');
+    mobileNav.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
 // Chat functionality
@@ -64,8 +91,8 @@ function sendMessage() {
     const userMessage = document.createElement('div');
     userMessage.className = 'message user';
     userMessage.innerHTML = `
-        You
-        ${message}
+        <div class="message-avatar">You</div>
+        <div class="message-content">${message}</div>
     `;
     chatMessages.appendChild(userMessage);
 
@@ -92,8 +119,8 @@ function sendMessage() {
         let response = generateResponse(message);
         
         aiMessage.innerHTML = `
-            AI
-            ${response}
+            <div class="message-avatar ai">AI</div>
+            <div class="message-content">${response}</div>
         `;
         chatMessages.appendChild(aiMessage);
         chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -166,12 +193,6 @@ function toggleFAQ(element) {
     faqItem.classList.toggle('active');
 }
 
-// Mobile menu toggle
-function toggleMobileMenu() {
-    // Implementation for mobile menu
-    alert('Mobile menu would toggle here');
-}
-
 // Add scroll effect to nav
 window.addEventListener('scroll', () => {
     const nav = document.querySelector('.nav');
@@ -185,6 +206,20 @@ window.addEventListener('scroll', () => {
             nav.style.backdropFilter = 'none';
             nav.style.boxShadow = 'none';
         }
+    }
+});
+
+// Close mobile menu on window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        closeMobileMenu();
+    }
+});
+
+// Close mobile menu on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeMobileMenu();
     }
 });
 
@@ -249,12 +284,12 @@ function displayFileQueue() {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
         fileItem.innerHTML = `
-            ${file.name}
-            ${formatFileSize(file.size)}
-            ×
-            
-                
-            
+            <span class="file-name">${file.name}</span>
+            <span class="file-size">${formatFileSize(file.size)}</span>
+            <button class="file-remove" onclick="removeFile(${index})">×</button>
+            <div class="upload-progress" style="display: none;">
+                <div class="upload-progress-bar" style="width: 0%"></div>
+            </div>
         `;
         fileListContainer.appendChild(fileItem);
     });
