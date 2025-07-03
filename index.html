@@ -13,17 +13,17 @@
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home')">
+            <a href="/" class="logo">
                 <div class="logo-icon"></div>
                 <span>Verbitsky Systems</span>
             </a>
             <div class="nav-links">
-                <a href="#" class="nav-link active" onclick="showPage('home')">Home</a>
-                <a href="#" class="nav-link" onclick="showPage('about')">About</a>
-                <a href="#" class="nav-link" onclick="showPage('ai-assistant')">AI Assistant</a>
-                <a href="#" class="nav-link" onclick="showPage('knowledge-base')">Knowledge Base</a>
-                <a href="#" class="nav-link" onclick="showPage('support')">Support</a>
-                <a href="#" class="nav-cta" onclick="showPage('contact')">Contact</a>
+                <a href="/" class="nav-link" data-page="home">Home</a>
+                <a href="/about" class="nav-link" data-page="about">About</a>
+                <a href="/ai-assistant" class="nav-link" data-page="ai-assistant">AI Assistant</a>
+                <a href="/knowledge-base" class="nav-link" data-page="knowledge-base">Knowledge Base</a>
+                <a href="/support" class="nav-link" data-page="support">Support</a>
+                <a href="/contact" class="nav-cta" data-page="contact">Contact</a>
             </div>
             <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
         </div>
@@ -46,11 +46,11 @@
                             Clean design, pure function, zero compromises.
                         </p>
                         <div class="hero-actions">
-                            <a href="#" class="btn btn-primary" onclick="showPage('ai-assistant')">
+                            <a href="/ai-assistant" class="btn btn-primary">
                                 Get Started
                                 <span>→</span>
                             </a>
-                            <a href="#" class="btn btn-secondary" onclick="showPage('about')">
+                            <a href="/about" class="btn btn-secondary">
                                 Learn More
                                 <span>↗</span>
                             </a>
@@ -222,11 +222,11 @@
                         Let's discuss how our platform can solve your specific industrial challenges.
                     </p>
                     <div class="cta-actions">
-                        <a href="#" class="btn btn-primary btn-large" onclick="showPage('contact')">
+                        <a href="/contact" class="btn btn-primary btn-large">
                             Get Started Today
                             <span>→</span>
                         </a>
-                        <a href="#" class="btn btn-secondary btn-large" onclick="showPage('ai-assistant')">
+                        <a href="/ai-assistant" class="btn btn-secondary btn-large">
                             Try AI Assistant
                             <span>🤖</span>
                         </a>
@@ -536,7 +536,7 @@
                     <div class="support-icon">📚</div>
                     <h3 class="support-title">Documentation</h3>
                     <p class="support-description">Comprehensive guides, API references, and integration tutorials to help you get the most from our platform.</p>
-                    <a href="#" class="support-link" onclick="showPage('knowledge-base')">
+                    <a href="/knowledge-base" class="support-link">
                         Browse Documentation
                         <span>→</span>
                     </a>
@@ -546,7 +546,7 @@
                     <div class="support-icon">💬</div>
                     <h3 class="support-title">Expert Support</h3>
                     <p class="support-description">Connect with our industrial automation experts for personalized assistance and troubleshooting.</p>
-                    <a href="#" class="support-link" onclick="showPage('contact')">
+                    <a href="/contact" class="support-link">
                         Contact Support
                         <span>→</span>
                     </a>
@@ -673,5 +673,70 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script>
+        // Initialize routing on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            handleRouting();
+            
+            // Handle browser back/forward buttons
+            window.addEventListener('popstate', function(e) {
+                handleRouting();
+            });
+        });
+        
+        function handleRouting() {
+            const path = window.location.pathname;
+            const hash = window.location.hash;
+            
+            // Map paths to page IDs
+            const routes = {
+                '/': 'home',
+                '/home': 'home',
+                '/about': 'about',
+                '/ai-assistant': 'ai-assistant',
+                '/knowledge-base': 'knowledge-base',
+                '/support': 'support',
+                '/contact': 'contact'
+            };
+            
+            // Get page ID from path or hash
+            let pageId = routes[path] || routes[hash.replace('#', '/')] || 'home';
+            
+            // Show the correct page
+            showPageByRoute(pageId);
+        }
+        
+        function showPageByRoute(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Update page title
+            const titles = {
+                'home': 'Verbitsky Systems - Industrial AI Solutions',
+                'about': 'About Us - Verbitsky Systems',
+                'ai-assistant': 'AI Assistant - Verbitsky Systems',
+                'knowledge-base': 'Knowledge Base - Verbitsky Systems',
+                'support': 'Support - Verbitsky Systems',
+                'contact': 'Contact - Verbitsky Systems'
+            };
+            document.title = titles[pageId] || titles['home'];
+        }
+    </script>
 </body>
 </html>
