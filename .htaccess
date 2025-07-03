@@ -11,14 +11,10 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Route all page requests to index.html
+# Route all non-file requests to index.html for client-side routing
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/(css|js|images|php)/
 RewriteCond %{REQUEST_URI} !^/robots\.txt$
 RewriteCond %{REQUEST_URI} !^/favicon\.ico$
-RewriteRule ^(home|about|ai-assistant|knowledge-base|support|contact)/?$ /index.html [L]
-
-# Redirect old hash URLs to new clean URLs
-RewriteCond %{QUERY_STRING} ^$
-RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^.*$ /index.html [L,QSA]
