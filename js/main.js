@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function handleInitialRouting() {
     const path = window.location.pathname;
+    console.log('Current path:', path); // Debug log
+    
     const pageMap = {
         '/': 'home',
         '/home': 'home',
@@ -109,6 +111,8 @@ function handleInitialRouting() {
     };
     
     const pageId = pageMap[path] || 'home';
+    console.log('Routing to page:', pageId); // Debug log
+    
     showPageByRoute(pageId);
 }
 
