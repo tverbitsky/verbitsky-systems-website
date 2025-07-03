@@ -1,4 +1,4 @@
-// Verbitsky Systems - Main JavaScript
+// Verbitsky Systems - Enhanced Main JavaScript
 
 // Page navigation
 function showPage(pageId) {
@@ -8,47 +8,60 @@ function showPage(pageId) {
     });
     
     // Show selected page
-    document.getElementById(pageId).classList.add('active');
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
     
     // Update nav links
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
     
-    // Find and activate the correct nav link
-    const navLink = document.querySelector(`.nav-link[href="#${pageId}"]`);
-    if (navLink) {
-        navLink.classList.add('active');
+    // Set active nav link based on page
+    const activeLink = document.querySelector(`a[onclick*="showPage('${pageId}')"]`);
+    if (activeLink && activeLink.classList.contains('nav-link')) {
+        activeLink.classList.add('active');
     }
+    
+    // Close mobile menu if open
+    closeMobileMenu();
     
     // Scroll to top
     window.scrollTo(0, 0);
 }
 
-// Mobile menu toggle
+// Mobile menu functionality
 function toggleMobileMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileNav = document.getElementById('mobileNav');
+    const navLinks = document.getElementById('navLinks');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
     
-    mobileMenu.classList.toggle('active');
-    mobileNav.classList.toggle('active');
-    
-    // Prevent body scroll when menu is open
-    if (mobileNav.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
+    if (navLinks && mobileMenuBtn && mobileMenuOverlay) {
+        navLinks.classList.toggle('active');
+        mobileMenuBtn.classList.toggle('active');
+        mobileMenuOverlay.classList.toggle('active');
+        
+        // Prevent body scroll when menu is open
+        if (navLinks.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     }
 }
 
-// Close mobile menu
 function closeMobileMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileNav = document.getElementById('mobileNav');
+    const navLinks = document.getElementById('navLinks');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
     
-    mobileMenu.classList.remove('active');
-    mobileNav.classList.remove('active');
-    document.body.style.overflow = '';
+    if (navLinks && mobileMenuBtn && mobileMenuOverlay) {
+        navLinks.classList.remove('active');
+        mobileMenuBtn.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 
 // Chat functionality
@@ -92,7 +105,7 @@ function sendMessage() {
     userMessage.className = 'message user';
     userMessage.innerHTML = `
         <div class="message-avatar">You</div>
-        <div class="message-content">${message}</div>
+        <div class="message-content">${escapeHtml(message)}</div>
     `;
     chatMessages.appendChild(userMessage);
 
@@ -175,7 +188,7 @@ Environmental factors like EMI or temperature can affect readings.
 
 What type of sensor and what's the expected vs actual output?`;
     } else {
-        return `I understand you're experiencing: "${message}"
+        return `I understand you're experiencing: "${escapeHtml(message)}"
 
 To provide the most accurate troubleshooting guidance, I need a bit more information:
 - Equipment make/model
@@ -209,20 +222,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Close mobile menu on window resize
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-        closeMobileMenu();
-    }
-});
-
-// Close mobile menu on escape key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeMobileMenu();
-    }
-});
-
 // Documents page functionality
 let selectedFiles = [];
 
@@ -252,6 +251,23 @@ document.addEventListener('DOMContentLoaded', function() {
         fileInput.addEventListener('change', (e) => {
             handleFiles(e.target.files);
         });
+    }
+
+    // Initialize lazy loading for images
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.src; // Trigger load
+                    img.classList.add('loaded');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        lazyImages.forEach(img => imageObserver.observe(img));
     }
 });
 
@@ -284,11 +300,11 @@ function displayFileQueue() {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
         fileItem.innerHTML = `
-            <span class="file-name">${file.name}</span>
+            <span class="file-name">${escapeHtml(file.name)}</span>
             <span class="file-size">${formatFileSize(file.size)}</span>
             <button class="file-remove" onclick="removeFile(${index})">×</button>
-            <div class="upload-progress" style="display: none;">
-                <div class="upload-progress-bar" style="width: 0%"></div>
+            <div class="upload-progress">
+                <div class="upload-progress-bar"></div>
             </div>
         `;
         fileListContainer.appendChild(fileItem);
@@ -317,6 +333,7 @@ function openUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
         modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -324,6 +341,7 @@ function closeUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
         modal.classList.remove('active');
+        document.body.style.overflow = '';
         selectedFiles = [];
         displayFileQueue();
         const uploadCategory = document.getElementById('uploadCategory');
@@ -346,31 +364,36 @@ function startUpload() {
         const progressBar = item.querySelector('.upload-progress');
         const progressFill = item.querySelector('.upload-progress-bar');
         
-        setTimeout(() => {
-            progressBar.style.display = 'block';
-            let progress = 0;
-            
-            const interval = setInterval(() => {
-                progress += Math.random() * 30;
-                if (progress > 100) progress = 100;
-                progressFill.style.width = progress + '%';
+        if (progressBar && progressFill) {
+            setTimeout(() => {
+                progressBar.style.display = 'block';
+                let progress = 0;
                 
-                if (progress === 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        item.style.opacity = '0.5';
-                        item.querySelector('.file-name').innerHTML += ' ✓';
-                    }, 300);
-                }
-            }, 300);
-        }, index * 200);
+                const interval = setInterval(() => {
+                    progress += Math.random() * 30;
+                    if (progress > 100) progress = 100;
+                    progressFill.style.width = progress + '%';
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            item.style.opacity = '0.5';
+                            const fileName = item.querySelector('.file-name');
+                            if (fileName && !fileName.textContent.includes('✓')) {
+                                fileName.textContent += ' ✓';
+                            }
+                        }, 300);
+                    }
+                }, 300);
+            }, index * 200);
+        }
     });
     
     // Close modal after all uploads
     setTimeout(() => {
         closeUploadModal();
-        // Refresh document list
-        location.reload();
+        // In a real application, you would refresh the document list here
+        alert('Documents uploaded successfully!');
     }, selectedFiles.length * 1000 + 1000);
 }
 
@@ -428,6 +451,13 @@ async function handleContactSubmit(event) {
     event.preventDefault();
     
     const formData = new FormData(event.target);
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    
+    // Disable submit button
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Sending... <span>→</span>';
+    }
     
     try {
         const response = await fetch('/php/contact-handler.php', {
@@ -438,7 +468,7 @@ async function handleContactSubmit(event) {
         const result = await response.json();
         
         if (result.success) {
-            alert('Message sent successfully!');
+            alert('Message sent successfully! We\'ll get back to you within 24 hours.');
             event.target.reset();
         } else {
             alert('Error: ' + result.error);
@@ -455,5 +485,43 @@ async function handleContactSubmit(event) {
         const mailtoLink = `mailto:tyler@verbitskysystems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         
         window.location.href = mailtoLink;
+    } finally {
+        // Re-enable submit button
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Send Message <span>→</span>';
+        }
     }
 }
+
+// Utility function to escape HTML
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Handle window resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        // Close mobile menu on desktop resize
+        if (window.innerWidth > 768) {
+            closeMobileMenu();
+        }
+    }, 250);
+});
+
+// Page transition effects
+document.addEventListener('DOMContentLoaded', () => {
+    // Add loaded class to body
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+    }, 100);
+});
