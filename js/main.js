@@ -278,50 +278,40 @@ function toggleFAQ(element) {
     faqItem.classList.toggle('active');
 }
 
-// Mobile menu toggle
-function toggleMobileMenu() {
-    const dropdown = document.getElementById('mobileNavDropdown');
-    if (dropdown) {
-        dropdown.classList.toggle('active');
+// Chat sidebar toggle
+function toggleChatSidebar() {
+    const sidebar = document.getElementById('chatSidebar');
+    const toggleIcon = document.getElementById('sidebarToggleIcon');
+    
+    if (sidebar) {
+        if (window.innerWidth <= 768) {
+            // Mobile: toggle open/closed
+            sidebar.classList.toggle('open');
+        } else {
+            // Desktop: toggle collapsed/expanded
+            sidebar.classList.toggle('collapsed');
+        }
         
-        // Close mobile prompts if open
-        const mobilePrompts = document.getElementById('mobilePromptsDropdown');
-        if (mobilePrompts) {
-            mobilePrompts.classList.remove('active');
+        // Update icon
+        if (toggleIcon) {
+            const isHidden = sidebar.classList.contains('collapsed') || !sidebar.classList.contains('open');
+            toggleIcon.textContent = isHidden ? '☰' : '✕';
         }
     }
 }
 
-// Mobile prompts toggle
-function toggleMobilePrompts() {
-    const dropdown = document.getElementById('mobilePromptsDropdown');
-    if (dropdown) {
-        dropdown.classList.toggle('active');
-    }
-}
-
-function hideMobilePrompts() {
-    const dropdown = document.getElementById('mobilePromptsDropdown');
-    if (dropdown) {
-        dropdown.classList.remove('active');
-    }
-}
-
-// Close dropdowns when clicking outside
+// Close sidebar when clicking outside on mobile
 document.addEventListener('click', function(e) {
-    const mobileNav = document.getElementById('mobileNavDropdown');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    const mobilePrompts = document.getElementById('mobilePromptsDropdown');
-    const mobilePromptsToggle = document.querySelector('.mobile-prompts-toggle');
-    
-    // Close mobile nav if clicking outside
-    if (mobileNav && !mobileNav.contains(e.target) && !mobileMenu.contains(e.target)) {
-        mobileNav.classList.remove('active');
-    }
-    
-    // Close mobile prompts if clicking outside
-    if (mobilePrompts && !mobilePrompts.contains(e.target) && mobilePromptsToggle && !mobilePromptsToggle.contains(e.target)) {
-        mobilePrompts.classList.remove('active');
+    if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('chatSidebar');
+        const toggle = document.querySelector('.sidebar-toggle');
+        
+        if (sidebar && sidebar.classList.contains('open') && 
+            !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+            const toggleIcon = document.getElementById('sidebarToggleIcon');
+            if (toggleIcon) toggleIcon.textContent = '☰';
+        }
     }
 });
 
