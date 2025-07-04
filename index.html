@@ -295,7 +295,12 @@
     <!-- AI Assistant Page -->
     <div id="ai-assistant" class="page">
         <div class="chat-container">
-            <div class="chat-sidebar">
+            <!-- Sidebar Toggle Button -->
+            <button class="sidebar-toggle" onclick="toggleChatSidebar()">
+                <span id="sidebarToggleIcon">☰</span>
+            </button>
+            
+            <div id="chatSidebar" class="chat-sidebar">
                 <div class="sidebar-section">
                     <h3 class="sidebar-title">Quick Prompts</h3>
                     <div class="quick-prompt" onclick="insertPrompt('My PLC is showing communication errors with the HMI. How do I troubleshoot this?')">
@@ -321,32 +326,6 @@
                         <div class="history-item">PLC Troubleshooting Session</div>
                         <div class="history-item">Motor Drive Configuration</div>
                         <div class="history-item">Safety System Reset</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Mobile Chat Header -->
-            <div class="mobile-chat-header">
-                <button class="mobile-prompts-toggle" onclick="toggleMobilePrompts()">
-                    <span>💡 Quick Prompts</span>
-                    <span>▼</span>
-                </button>
-                <div id="mobilePromptsDropdown" class="mobile-prompts-dropdown">
-                    <div class="quick-prompt" onclick="insertPrompt('My PLC is showing communication errors with the HMI. How do I troubleshoot this?'); hideMobilePrompts();">
-                        <div class="quick-prompt-title">PLC Communication</div>
-                        <div class="quick-prompt-desc">HMI connection issues</div>
-                    </div>
-                    <div class="quick-prompt" onclick="insertPrompt('Motor is overheating during operation. What should I check?'); hideMobilePrompts();">
-                        <div class="quick-prompt-title">Motor Diagnostics</div>
-                        <div class="quick-prompt-desc">Thermal protection</div>
-                    </div>
-                    <div class="quick-prompt" onclick="insertPrompt('Safety system won\'t reset after E-stop. Walk me through the process.'); hideMobilePrompts();">
-                        <div class="quick-prompt-title">Safety Systems</div>
-                        <div class="quick-prompt-desc">E-stop reset procedure</div>
-                    </div>
-                    <div class="quick-prompt" onclick="insertPrompt('Sensor readings are inconsistent. How do I diagnose this?'); hideMobilePrompts();">
-                        <div class="quick-prompt-title">Sensor Issues</div>
-                        <div class="quick-prompt-desc">Signal diagnostics</div>
                     </div>
                 </div>
             </div>
