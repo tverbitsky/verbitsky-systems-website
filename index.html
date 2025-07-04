@@ -348,7 +348,7 @@
     <div id="ai-assistant" class="page">
         <div class="chat-container">
             <!-- Sidebar Toggle Button -->
-            <button class="sidebar-toggle" onclick="toggleChatSidebar()">
+            <button class="sidebar-toggle" onclick="toggleChatSidebar()" title="Toggle sidebar">
                 <span id="sidebarToggleIcon">☰</span>
             </button>
             
@@ -385,17 +385,23 @@
             <div class="chat-main">
                 <div class="chat-header">
                     <div class="chat-header-content">
-                        <div>
-                            <h2>AI Diagnostics Assistant</h2>
-                            <div class="chat-status">
-                                <div class="status-indicator"></div>
-                                <span>Ready to assist with industrial equipment diagnostics</span>
-                            </div>
-                        </div>
-                        <div class="chat-stats">
-                            <span id="messageCount">0</span> messages
+                        <h2>AI Diagnostics Assistant</h2>
+                        <div class="chat-status">
+                            <div class="status-indicator"></div>
+                            <span>Ready to assist with industrial equipment diagnostics</span>
                         </div>
                     </div>
+                    <div class="chat-stats">
+                        <span id="messageCount">0</span> messages
+                    </div>
+                </div>
+                
+                <!-- Desktop Quick Prompts -->
+                <div class="desktop-prompts">
+                    <div class="desktop-prompt-chip" onclick="insertPrompt('PLC communication error troubleshooting')">🔧 PLC Communication</div>
+                    <div class="desktop-prompt-chip" onclick="insertPrompt('Motor overheating diagnosis and solutions')">⚡ Motor Diagnostics</div>
+                    <div class="desktop-prompt-chip" onclick="insertPrompt('Safety system reset procedure and troubleshooting')">🛡️ Safety Systems</div>
+                    <div class="desktop-prompt-chip" onclick="insertPrompt('Sensor calibration and signal analysis help')">📊 Sensor Issues</div>
                 </div>
                 
                 <!-- Mobile Quick Prompts -->
@@ -418,7 +424,7 @@
                             placeholder="Ask me about your industrial equipment..."
                             rows="1"
                         ></textarea>
-                        <button class="chat-send" onclick="sendMessage()">
+                        <button class="chat-send" onclick="sendMessage()" title="Send message">
                             <span>→</span>
                         </button>
                     </div>
@@ -494,11 +500,11 @@
                                 <option value="name">Name</option>
                                 <option value="size">Size</option>
                             </select>
+                            <button class="btn btn-primary" onclick="openUploadModal()">
+                                <span>+</span>
+                                <span>Upload</span>
+                            </button>
                         </div>
-                        <button class="btn btn-primary" onclick="openUploadModal()">
-                            <span>+</span>
-                            <span>Upload</span>
-                        </button>
                     </div>
                     
                     <div class="document-grid">
@@ -535,6 +541,48 @@
                             <div class="doc-info">
                                 <h3 class="doc-title">API Integration Guide</h3>
                                 <div class="doc-meta">PDF • 1.2 MB • 2 weeks ago</div>
+                                <div class="doc-category-tag">API</div>
+                            </div>
+                            <div class="doc-actions">
+                                <button class="doc-action" title="View">👁</button>
+                                <button class="doc-action" title="Download">⬇</button>
+                                <button class="doc-action" title="Delete">🗑</button>
+                            </div>
+                        </div>
+
+                        <div class="document-card" data-category="installation">
+                            <div class="doc-icon">⚙️</div>
+                            <div class="doc-info">
+                                <h3 class="doc-title">System Requirements</h3>
+                                <div class="doc-meta">PDF • 1.8 MB • 1 week ago</div>
+                                <div class="doc-category-tag">Installation</div>
+                            </div>
+                            <div class="doc-actions">
+                                <button class="doc-action" title="View">👁</button>
+                                <button class="doc-action" title="Download">⬇</button>
+                                <button class="doc-action" title="Delete">🗑</button>
+                            </div>
+                        </div>
+
+                        <div class="document-card" data-category="troubleshooting">
+                            <div class="doc-icon">🛠️</div>
+                            <div class="doc-info">
+                                <h3 class="doc-title">Motor Drive Diagnostics</h3>
+                                <div class="doc-meta">PDF • 5.3 MB • 4 days ago</div>
+                                <div class="doc-category-tag">Troubleshooting</div>
+                            </div>
+                            <div class="doc-actions">
+                                <button class="doc-action" title="View">👁</button>
+                                <button class="doc-action" title="Download">⬇</button>
+                                <button class="doc-action" title="Delete">🗑</button>
+                            </div>
+                        </div>
+
+                        <div class="document-card" data-category="api">
+                            <div class="doc-icon">🔗</div>
+                            <div class="doc-info">
+                                <h3 class="doc-title">REST API Reference</h3>
+                                <div class="doc-meta">PDF • 3.7 MB • 1 week ago</div>
                                 <div class="doc-category-tag">API</div>
                             </div>
                             <div class="doc-actions">
