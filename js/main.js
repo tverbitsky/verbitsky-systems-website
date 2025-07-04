@@ -1,37 +1,73 @@
-// Verbitsky Systems - Main JavaScript
+// Verbitsky Systems - Enhanced Main JavaScript
 
 // Page navigation
 function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // Show selected page
     document.getElementById(pageId).classList.add('active');
     
-    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    // Update nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
     
-    if (event && event.target) {
-        event.target.classList.add('active');
-    } else {
-        const navLink = document.querySelector(`a[href="#${pageId}"]`);
-        if (navLink) navLink.classList.add('active');
+    // Set active nav link based on pageId
+    const activeLink = document.querySelector(`.nav-link[href="#${pageId}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
     }
     
-    history.pushState(null, null, `#${pageId}`);
+    // Update URL hash
+    window.location.hash = pageId;
+    
+    // Scroll to top
     window.scrollTo(0, 0);
+    
+    // Close mobile menu if open
+    const mobileOverlay = document.getElementById('mobileMenuOverlay');
+    if (mobileOverlay) {
+        mobileOverlay.classList.remove('active');
+    }
 }
 
-// Handle browser back/forward
-window.addEventListener('popstate', function() {
-    const hash = window.location.hash.substring(1) || 'home';
-    if (document.getElementById(hash)) showPage(hash);
-});
+// Mobile menu toggle
+function toggleMobileMenu() {
+    const mobileOverlay = document.getElementById('mobileMenuOverlay');
+    if (mobileOverlay) {
+        mobileOverlay.classList.toggle('active');
+    }
+}
 
-// Initialize page on load
-document.addEventListener('DOMContentLoaded', function() {
-    const hash = window.location.hash.substring(1) || 'home';
-    if (document.getElementById(hash)) showPage(hash);
-});
+// Sidebar toggle for chat
+let sidebarCollapsed = false;
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('chatSidebar');
+    const expandBtn = document.getElementById('sidebarExpand');
+    const chatMain = document.querySelector('.chat-main');
+    
+    if (sidebar && expandBtn && chatMain) {
+        sidebarCollapsed = !sidebarCollapsed;
+        
+        if (sidebarCollapsed) {
+            sidebar.classList.add('collapsed');
+            expandBtn.style.display = 'flex';
+            chatMain.classList.add('expanded');
+        } else {
+            sidebar.classList.remove('collapsed');
+            expandBtn.style.display = 'none';
+            chatMain.classList.remove('expanded');
+        }
+    }
+}
 
 // Chat functionality
-let messageCount = 5;
+let messageCount = 1;
+let isTyping = false;
 const chatInput = document.getElementById('chatInput');
 const chatMessages = document.getElementById('chatMessages');
 
@@ -40,11 +76,9 @@ if (chatInput) {
     chatInput.addEventListener('input', function() {
         this.style.height = 'auto';
         this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-        
-        const sendBtn = document.querySelector('.chat-send');
-        if (sendBtn) sendBtn.disabled = this.value.trim() === '';
     });
 
+    // Send on Enter
     chatInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -59,14 +93,11 @@ function insertPrompt(prompt) {
         chatInput.focus();
         chatInput.style.height = 'auto';
         chatInput.style.height = chatInput.scrollHeight + 'px';
-        
-        const sendBtn = document.querySelector('.chat-send');
-        if (sendBtn) sendBtn.disabled = false;
     }
 }
 
 function sendMessage() {
-    if (!chatInput || !chatMessages) return;
+    if (!chatInput || !chatMessages || isTyping) return;
     
     const message = chatInput.value.trim();
     if (!message) return;
@@ -75,147 +106,251 @@ function sendMessage() {
     const userMessage = document.createElement('div');
     userMessage.className = 'message user';
     userMessage.innerHTML = `
-        <div class="message-avatar user">You</div>
-        <div class="message-content">${escapeHtml(message)}</div>
+        <div class="message-avatar">You</div>
+        <div class="message-content">
+            <div class="message-text">${message}</div>
+        </div>
     `;
     chatMessages.appendChild(userMessage);
 
     // Clear input
     chatInput.value = '';
     chatInput.style.height = 'auto';
-    
-    const sendBtn = document.querySelector('.chat-send');
-    if (sendBtn) sendBtn.disabled = true;
 
     // Update message count
-    messageCount += 1;
+    messageCount += 2;
     const messageCountEl = document.getElementById('messageCount');
-    if (messageCountEl) messageCountEl.textContent = messageCount;
+    if (messageCountEl) {
+        messageCountEl.textContent = messageCount;
+    }
 
+    // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
     // Show typing indicator
+    isTyping = true;
     showTypingIndicator();
 
-    // Simulate AI response
+    // Simulate AI response with typing effect
     setTimeout(() => {
-        hideTypingIndicator();
-        
-        const aiMessage = document.createElement('div');
-        aiMessage.className = 'message';
-        
-        let response = generateResponse(message);
-        
-        aiMessage.innerHTML = `
-            <div class="message-avatar ai">AI</div>
-            <div class="message-content">${response}</div>
-        `;
-        chatMessages.appendChild(aiMessage);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        
-        messageCount += 1;
-        if (messageCountEl) messageCountEl.textContent = messageCount;
-    }, Math.random() * 2000 + 1000);
+        removeTypingIndicator();
+        const response = generateResponse(message);
+        typeAIResponse(response);
+    }, 1500 + Math.random() * 1000);
 }
 
 function showTypingIndicator() {
-    const typingIndicator = document.createElement('div');
-    typingIndicator.className = 'message typing-indicator';
-    typingIndicator.id = 'typingIndicator';
-    typingIndicator.innerHTML = `
+    const typingMessage = document.createElement('div');
+    typingMessage.className = 'message typing-message';
+    typingMessage.innerHTML = `
         <div class="message-avatar ai">AI</div>
         <div class="message-content">
-            <div class="typing-dots">
-                <span></span><span></span><span></span>
+            <div class="typing-indicator">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
             </div>
         </div>
     `;
-    
-    if (!document.getElementById('typingStyles')) {
-        const style = document.createElement('style');
-        style.id = 'typingStyles';
-        style.textContent = `
-            .typing-dots { display: flex; gap: 4px; align-items: center; padding: 8px 0; }
-            .typing-dots span { width: 8px; height: 8px; background: var(--text-muted); border-radius: 50%; animation: typing 1.4s infinite ease-in-out; }
-            .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-            .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-            .typing-dots span:nth-child(3) { animation-delay: 0s; }
-            @keyframes typing { 0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
-        `;
-        document.head.appendChild(style);
-    }
-    
-    chatMessages.appendChild(typingIndicator);
+    chatMessages.appendChild(typingMessage);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-function hideTypingIndicator() {
-    const indicator = document.getElementById('typingIndicator');
-    if (indicator) indicator.remove();
+function removeTypingIndicator() {
+    const typingMessage = document.querySelector('.typing-message');
+    if (typingMessage) {
+        typingMessage.remove();
+    }
 }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+function typeAIResponse(text) {
+    const aiMessage = document.createElement('div');
+    aiMessage.className = 'message';
+    aiMessage.innerHTML = `
+        <div class="message-avatar ai">AI</div>
+        <div class="message-content">
+            <div class="message-text"></div>
+        </div>
+    `;
+    chatMessages.appendChild(aiMessage);
+    
+    const messageText = aiMessage.querySelector('.message-text');
+    let index = 0;
+    
+    function typeNext() {
+        if (index < text.length) {
+            messageText.textContent += text[index];
+            index++;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            setTimeout(typeNext, 20 + Math.random() * 30);
+        } else {
+            isTyping = false;
+        }
+    }
+    
+    typeNext();
 }
 
 function generateResponse(message) {
-    const msg = message.toLowerCase();
+    const lowerMessage = message.toLowerCase();
     
-    if (msg.includes('plc') && (msg.includes('hmi') || msg.includes('communication'))) {
-        return `<strong>PLC-HMI Communication Issues:</strong><br><br>
-        1. <strong>Check connections</strong> - Cable seating<br>
-        2. <strong>Verify network</strong> - IP addresses match<br>
-        3. <strong>Test ping</strong> - HMI to PLC connectivity<br>
-        4. <strong>Review drivers</strong> - Correct version<br><br>
-        What error messages are you seeing?`;
-    } 
-    if (msg.includes('motor') && (msg.includes('overheat') || msg.includes('thermal'))) {
-        return `<strong>Motor Overheating:</strong><br><br>
-        1. <strong>Ambient temp</strong> - Adequate cooling?<br>
-        2. <strong>Load check</strong> - Motor overloaded?<br>
-        3. <strong>VFD params</strong> - Accel/decel times<br>
-        4. <strong>Mechanical</strong> - Bearing noise<br><br>
-        What's rated vs actual load?`;
+    if (lowerMessage.includes('plc') && lowerMessage.includes('hmi')) {
+        return `For PLC-HMI communication issues, let's diagnose systematically:
+
+1. **Check physical connections** - Ensure all cables are properly seated
+2. **Verify network settings** - IP addresses, subnet masks must match
+3. **Test ping connectivity** - Can the HMI ping the PLC?
+4. **Review communication drivers** - Ensure correct driver and version
+
+Common causes: IP conflicts, cable issues, or driver mismatches. 
+
+What error messages are you seeing on the HMI?`;
+    } else if (lowerMessage.includes('motor') && lowerMessage.includes('overheat')) {
+        return `Motor overheating requires immediate attention. Check these items:
+
+1. **Ambient temperature** - Is cooling adequate?
+2. **Load conditions** - Verify motor isn't overloaded
+3. **VFD parameters** - Check acceleration/deceleration times
+4. **Mechanical issues** - Listen for bearing noise
+
+Safety first: Ensure proper lockout/tagout before inspection.
+
+What's the motor's rated capacity versus actual load?`;
+    } else if (lowerMessage.includes('safety') || lowerMessage.includes('e-stop')) {
+        return `Safety system reset issues are critical. Follow this sequence:
+
+1. **Verify all E-stops** are pulled out/reset
+2. **Check safety relay** status LEDs
+3. **Review safety circuit** continuity
+4. **Inspect door switches** and light curtains
+
+The safety system requires all conditions cleared before reset.
+
+Are there any specific fault codes on the safety relay?`;
+    } else if (lowerMessage.includes('sensor')) {
+        return `For sensor diagnostic issues:
+
+1. **Check power supply** - Verify correct voltage
+2. **Inspect wiring** - Look for damage or interference
+3. **Test with multimeter** - Measure output signal
+4. **Review mounting** - Ensure proper alignment
+
+Environmental factors like EMI or temperature can affect readings.
+
+What type of sensor and what's the expected vs actual output?`;
+    } else {
+        return `I understand you're experiencing: "${message}"
+
+To provide the most accurate troubleshooting guidance, I need more information:
+- Equipment make/model
+- Error codes or alarms present
+- When the issue started
+- Any recent changes to the system
+
+This helps me give you specific, actionable solutions. What additional details can you provide?`;
     }
-    if (msg.includes('safety') || msg.includes('e-stop')) {
-        return `<strong>Safety System Reset:</strong><br><br>
-        1. <strong>E-stops</strong> - All pulled out/reset<br>
-        2. <strong>Safety relay</strong> - Check LEDs<br>
-        3. <strong>Circuit check</strong> - Continuity<br>
-        4. <strong>Door switches</strong> - Light curtains<br><br>
-        Any fault codes on safety relay?`;
-    }
-    if (msg.includes('sensor')) {
-        return `<strong>Sensor Diagnostics:</strong><br><br>
-        1. <strong>Power supply</strong> - 24VDC verified<br>
-        2. <strong>Wiring</strong> - Damage/EMI check<br>
-        3. <strong>Signal test</strong> - 4-20mA/0-10V<br>
-        4. <strong>Mounting</strong> - Alignment/distance<br><br>
-        What sensor type and expected vs actual output?`;
-    }
-    
-    return `I can help with: "<em>${escapeHtml(message)}</em>"<br><br>
-    Need more details:<br>
-    • Equipment make/model<br>
-    • Error codes/alarms<br>
-    • When issue started<br>
-    • Recent changes<br><br>
-    What additional info can you provide?`;
 }
 
 // FAQ toggle
 function toggleFAQ(element) {
-    element.parentElement.classList.toggle('active');
+    const faqItem = element.parentElement;
+    faqItem.classList.toggle('active');
 }
 
-// Mobile menu toggle
-function toggleMobileMenu() {
-    alert('Mobile menu functionality - production implementation needed');
+// Dynamic grid animation for hero section
+function initDynamicGrid() {
+    const gridItems = document.querySelectorAll('.grid-item');
+    
+    function animateGrid() {
+        gridItems.forEach((item, index) => {
+            const delay = parseInt(item.dataset.delay) || 0;
+            setTimeout(() => {
+                item.classList.add('active');
+                setTimeout(() => {
+                    item.classList.remove('active');
+                }, 1000);
+            }, delay);
+        });
+    }
+    
+    // Initial animation
+    setTimeout(animateGrid, 1000);
+    
+    // Repeat animation every 5 seconds
+    setInterval(animateGrid, 5000);
 }
 
-// Scroll effect
+// Scroll animation observer
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all scroll-animate elements
+    document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Observe grid items for scroll-triggered animation
+    document.querySelectorAll('.grid-item').forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Enhanced scroll effects
+function initEnhancedScrollEffects() {
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        
+        // Animate grid on scroll
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            const rect = heroSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                const gridItems = document.querySelectorAll('.grid-item');
+                gridItems.forEach((item, index) => {
+                    if (Math.random() > 0.7) { // Random chance for animation
+                        item.classList.add('active');
+                        setTimeout(() => {
+                            item.classList.remove('active');
+                        }, 800);
+                    }
+                });
+            }
+        }
+        
+        // Animate cards on scroll
+        const cards = document.querySelectorAll('.stat-card, .feature-card');
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
+                if (Math.random() > 0.95) { // Very occasional animation
+                    card.style.transform = 'translateY(-4px)';
+                    card.style.borderColor = 'var(--accent-green-border)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                        card.style.borderColor = '';
+                    }, 300);
+                }
+            }
+        });
+        
+        lastScrollY = currentScrollY;
+    });
+}
+
+// Add scroll effect to nav
 window.addEventListener('scroll', () => {
     const nav = document.querySelector('.nav');
     if (nav) {
@@ -231,10 +366,23 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Documents functionality
+// Documents page functionality
 let selectedFiles = [];
 
+// Initialize upload area
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize dynamic effects
+    initDynamicGrid();
+    initScrollAnimations();
+    initEnhancedScrollEffects();
+    
+    // Handle URL hash on load
+    const hash = window.location.hash.substring(1);
+    if (hash && document.getElementById(hash)) {
+        showPage(hash);
+    }
+    
+    // Upload functionality
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
     
@@ -261,36 +409,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    const sendBtn = document.querySelector('.chat-send');
-    if (sendBtn) sendBtn.disabled = true;
+    // View controls for knowledge base
+    const viewBtns = document.querySelectorAll('.view-btn');
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            viewBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
 });
 
 function handleFiles(files) {
     const fileList = Array.from(files);
-    
-    const validFiles = fileList.filter(file => {
-        const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
-        const fileExt = '.' + file.name.split('.').pop().toLowerCase();
-        const maxSize = 50 * 1024 * 1024; // 50MB
-        
-        if (!validTypes.includes(fileExt)) {
-            alert(`${file.name} is not a supported file type.`);
-            return false;
-        }
-        
-        if (file.size > maxSize) {
-            alert(`${file.name} exceeds the 50MB size limit.`);
-            return false;
-        }
-        
-        return true;
-    });
-    
-    selectedFiles = [...selectedFiles, ...validFiles];
+    selectedFiles = [...selectedFiles, ...fileList];
     displayFileQueue();
     
     const uploadBtn = document.getElementById('uploadBtn');
-    if (uploadBtn) uploadBtn.disabled = selectedFiles.length === 0;
+    if (uploadBtn) {
+        uploadBtn.disabled = selectedFiles.length === 0;
+    }
 }
 
 function displayFileQueue() {
@@ -311,9 +448,9 @@ function displayFileQueue() {
         const fileItem = document.createElement('div');
         fileItem.className = 'file-item';
         fileItem.innerHTML = `
-            <div class="file-name">${escapeHtml(file.name)}</div>
-            <div class="file-size">${formatFileSize(file.size)}</div>
-            <button class="file-remove" onclick="removeFile(${index})" type="button">×</button>
+            <span class="file-name">${file.name}</span>
+            <span class="file-size">${formatFileSize(file.size)}</span>
+            <button class="file-remove" onclick="removeFile(${index})">×</button>
             <div class="upload-progress" style="display: none;">
                 <div class="upload-progress-bar" style="width: 0%"></div>
             </div>
@@ -327,7 +464,9 @@ function removeFile(index) {
     displayFileQueue();
     
     const uploadBtn = document.getElementById('uploadBtn');
-    if (uploadBtn) uploadBtn.disabled = selectedFiles.length === 0;
+    if (uploadBtn) {
+        uploadBtn.disabled = selectedFiles.length === 0;
+    }
 }
 
 function formatFileSize(bytes) {
@@ -342,7 +481,6 @@ function openUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
         modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
     }
 }
 
@@ -350,27 +488,23 @@ function closeUploadModal() {
     const modal = document.getElementById('uploadModal');
     if (modal) {
         modal.classList.remove('active');
-        document.body.style.overflow = '';
         selectedFiles = [];
         displayFileQueue();
         const uploadCategory = document.getElementById('uploadCategory');
-        if (uploadCategory) uploadCategory.value = '';
+        if (uploadCategory) {
+            uploadCategory.value = '';
+        }
     }
 }
 
 function startUpload() {
-    const category = document.getElementById('uploadCategory');
-    if (!category || !category.value) {
+    const category = document.getElementById('uploadCategory').value;
+    if (!category) {
         alert('Please select a category for the documents');
         return;
     }
     
-    const uploadBtn = document.getElementById('uploadBtn');
-    if (uploadBtn) {
-        uploadBtn.disabled = true;
-        uploadBtn.textContent = 'Uploading...';
-    }
-    
+    // Simulate upload progress
     const fileItems = document.querySelectorAll('.file-item');
     fileItems.forEach((item, index) => {
         const progressBar = item.querySelector('.upload-progress');
@@ -381,7 +515,7 @@ function startUpload() {
             let progress = 0;
             
             const interval = setInterval(() => {
-                progress += Math.random() * 25 + 5;
+                progress += Math.random() * 30;
                 if (progress > 100) progress = 100;
                 progressFill.style.width = progress + '%';
                 
@@ -389,28 +523,31 @@ function startUpload() {
                     clearInterval(interval);
                     setTimeout(() => {
                         item.style.opacity = '0.5';
-                        const fileName = item.querySelector('.file-name');
-                        if (fileName) fileName.innerHTML += ' <span style="color: var(--accent-green)">✓</span>';
+                        item.querySelector('.file-name').innerHTML += ' ✓';
                     }, 300);
                 }
-            }, 200);
-        }, index * 300);
+            }, 300);
+        }, index * 200);
     });
     
+    // Close modal after all uploads
     setTimeout(() => {
         closeUploadModal();
-        alert('Documents uploaded successfully!');
-    }, selectedFiles.length * 1500 + 1000);
+        // Refresh document list would go here
+        alert('Files uploaded successfully!');
+    }, selectedFiles.length * 1000 + 1000);
 }
 
 function filterByCategory(category) {
-    document.querySelectorAll('.category-item').forEach(item => item.classList.remove('active'));
-    
+    // Update active category
+    document.querySelectorAll('.category-item').forEach(item => {
+        item.classList.remove('active');
+    });
     if (event && event.target) {
-        const categoryItem = event.target.closest('.category-item');
-        if (categoryItem) categoryItem.classList.add('active');
+        event.target.closest('.category-item').classList.add('active');
     }
     
+    // Filter documents
     const documents = document.querySelectorAll('.document-card');
     documents.forEach(doc => {
         if (category === 'all' || doc.dataset.category === category) {
@@ -426,8 +563,8 @@ function searchDocuments(query) {
     const lowerQuery = query.toLowerCase();
     
     documents.forEach(doc => {
-        const title = doc.querySelector('.doc-title');
-        if (title && title.textContent.toLowerCase().includes(lowerQuery)) {
+        const title = doc.querySelector('.doc-title').textContent.toLowerCase();
+        if (title.includes(lowerQuery)) {
             doc.style.display = 'flex';
         } else {
             doc.style.display = 'none';
@@ -437,7 +574,7 @@ function searchDocuments(query) {
 
 function addCategory() {
     const categoryName = prompt('Enter new category name:');
-    if (categoryName && categoryName.trim()) {
+    if (categoryName) {
         alert(`Category "${categoryName}" would be added to the system.`);
     }
 }
@@ -445,17 +582,27 @@ function addCategory() {
 // Close modal on click outside
 window.addEventListener('click', (e) => {
     const modal = document.getElementById('uploadModal');
-    if (modal && e.target === modal) closeUploadModal();
+    if (modal && e.target === modal) {
+        closeUploadModal();
+    }
+    
+    const mobileOverlay = document.getElementById('mobileMenuOverlay');
+    if (mobileOverlay && e.target === mobileOverlay) {
+        toggleMobileMenu();
+    }
+});
+
+// Handle browser back/forward
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.substring(1);
+    if (hash && document.getElementById(hash)) {
+        showPage(hash);
+    }
 });
 
 // Contact form handler
 async function handleContactSubmit(event) {
     event.preventDefault();
-    
-    const submitBtn = event.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
     
     const formData = new FormData(event.target);
     
@@ -468,12 +615,13 @@ async function handleContactSubmit(event) {
         const result = await response.json();
         
         if (result.success) {
-            alert('Message sent successfully! We\'ll get back to you within 24 hours.');
+            alert('Message sent successfully!');
             event.target.reset();
         } else {
-            throw new Error(result.error || 'Unknown error occurred');
+            alert('Error: ' + result.error);
         }
     } catch (error) {
+        // Fallback to mailto
         const name = formData.get('name');
         const email = formData.get('email');
         const company = formData.get('company');
@@ -484,8 +632,5 @@ async function handleContactSubmit(event) {
         const mailtoLink = `mailto:tyler@verbitskysystems.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         
         window.location.href = mailtoLink;
-    } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
     }
 }
