@@ -4,6 +4,12 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch: # Allows manual triggering
+
+# Prevent concurrent deployments
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
