@@ -1639,35 +1639,22 @@ p {
     font-size: 0.875rem;
 }
 
-/* Typing Indicator */
-.typing-indicator {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-    padding: var(--space-sm) 0;
+/* Hide Mobile Menu on Desktop */
+.mobile-menu {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.typing-indicator span {
-    width: 6px;
-    height: 6px;
-    background: var(--text-muted);
-    border-radius: 50%;
-    animation: typing 1.4s infinite ease-in-out;
+.mobile-menu:hover {
+    color: var(--accent-green);
 }
 
-.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-
-@keyframes typing {
-    0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
-    40% { transform: scale(1.2); opacity: 1; }
-}
-
-.message.typing {
-    opacity: 0.8;
-}
-
-/* Mobile Navigation Improvements */
+/* Mobile Navigation Dropdown - Hidden by default */
 .mobile-nav-dropdown {
     display: none;
     position: absolute;
@@ -1705,6 +1692,9 @@ p {
     border: 1px solid var(--border-primary);
     text-align: center;
     transition: var(--transition);
+    text-decoration: none;
+    color: var(--text-primary);
+    display: block;
 }
 
 .mobile-nav-links .nav-link:hover,
@@ -2743,8 +2733,20 @@ p {
     }
 }
 
-/* Hide sidebar toggle on desktop */
+/* Desktop Navigation - Hide mobile elements */
 @media (min-width: 769px) {
+    .mobile-menu {
+        display: none !important;
+    }
+    
+    .mobile-nav-dropdown {
+        display: none !important;
+    }
+    
+    .nav-links {
+        display: flex;
+    }
+    
     .sidebar-toggle {
         display: block;
     }
@@ -2758,7 +2760,16 @@ p {
     }
 }
 
+/* Mobile Navigation - Show mobile elements */
 @media (max-width: 768px) {
+    .nav-links {
+        display: none !important;
+    }
+    
+    .mobile-menu {
+        display: block;
+    }
+    
     .desktop-prompts {
         display: none;
     }
@@ -2766,7 +2777,33 @@ p {
     .mobile-prompts {
         display: flex;
     }
-}
+    
+    /* Fix mobile navigation positioning */
+    .nav-container {
+        position: relative;
+    }
+    
+    .mobile-nav-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-secondary);
+        box-shadow: var(--shadow-lg);
+        z-index: 999;
+        transform: translateY(-10px);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+    }
+    
+    .mobile-nav-dropdown.active {
+        display: block;
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
