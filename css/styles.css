@@ -1996,6 +1996,7 @@ p {
 @media (max-width: 768px) {
     .nav-container {
         padding: 0 var(--space-lg);
+        position: relative;
     }
     
     .nav-links {
@@ -2011,21 +2012,22 @@ p {
     }
 
     .hero {
-        padding: var(--space-2xl) 0;
+        padding: var(--space-xl) 0;
     }
 
     .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        line-height: 1.2;
     }
     
     .hero-image {
-        max-width: 280px;
-        height: 200px;
+        display: none;
     }
 
     .hero-actions {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: var(--space-md);
     }
 
     .stats-grid,
@@ -2038,44 +2040,187 @@ p {
         grid-template-columns: 1fr;
     }
 
-    /* Mobile Chat Interface */
+    /* Mobile Chat Interface - Gemini Style */
+    .chat-container {
+        flex-direction: column;
+        height: calc(100vh - 64px);
+    }
+    
     .chat-sidebar {
-        position: fixed;
-        top: 64px;
-        left: 0;
-        bottom: 0;
-        width: 280px;
-        transform: translateX(-100%);
-        z-index: 100;
-        box-shadow: var(--shadow-lg);
-    }
-    
-    .chat-sidebar.open {
-        transform: translateX(0);
-    }
-    
-    .chat-main {
-        width: 100%;
+        display: none;
     }
     
     .sidebar-toggle {
-        display: block;
+        display: none;
+    }
+    
+    .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .chat-header {
+        padding: var(--space-lg);
+        text-align: center;
+        background: var(--bg-secondary);
+        border-bottom: none;
+    }
+    
+    .chat-header h2 {
+        font-size: 1.75rem;
+        font-weight: 400;
+        background: linear-gradient(45deg, #4285f4, #9c27b0, #ff9800);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: var(--space-sm);
+    }
+    
+    .chat-status {
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 0.875rem;
+    }
+    
+    .chat-stats {
+        display: none;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: var(--space-lg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: var(--bg-secondary);
+    }
+    
+    .chat-messages:empty::before {
+        content: "👋 Hi! I'm your AI diagnostics assistant. How can I help with your industrial equipment today?";
+        color: var(--text-secondary);
+        font-size: 1.125rem;
+        line-height: 1.6;
+        max-width: 300px;
+    }
+    
+    .message {
+        width: 100%;
+        max-width: none;
+        margin-bottom: var(--space-lg);
+        background: var(--bg-primary);
+        border-radius: var(--radius-xl);
+        padding: var(--space-lg);
+        border: 1px solid var(--border-primary);
+    }
+    
+    .message.user {
+        background: var(--accent-green-bg);
+        border-color: var(--accent-green-border);
+        margin-left: auto;
+        max-width: 85%;
+    }
+    
+    .message-avatar {
+        display: none;
+    }
+    
+    .message-content {
+        max-width: 100%;
+        padding: 0;
+        background: transparent;
+        border: none;
+        font-size: 1rem;
+        line-height: 1.6;
     }
 
     .chat-input-container {
         padding: var(--space-lg);
-    }
-
-    .message-content {
-        max-width: 85%;
-    }
-    
-    .chat-messages {
-        padding: var(--space-md);
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-secondary);
     }
     
     .chat-input-wrapper {
+        display: flex;
         gap: var(--space-md);
+        align-items: flex-end;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-primary);
+        border-radius: var(--radius-xl);
+        padding: var(--space-md);
+    }
+
+    .chat-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        padding: var(--space-sm) 0;
+        color: var(--text-primary);
+        font-size: 1rem;
+        resize: none;
+        min-height: 24px;
+        max-height: 120px;
+        outline: none;
+    }
+    
+    .chat-input::placeholder {
+        color: var(--text-muted);
+    }
+
+    .chat-send {
+        width: 36px;
+        height: 36px;
+        background: var(--accent-green);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 1.2rem;
+    }
+
+    .chat-send:hover {
+        background: var(--accent-green-dark);
+        transform: scale(1.05);
+    }
+    
+    /* Mobile Quick Prompts */
+    .mobile-prompts {
+        display: flex;
+        gap: var(--space-sm);
+        padding: 0 var(--space-lg) var(--space-lg);
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .mobile-prompts::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .mobile-prompt-chip {
+        flex-shrink: 0;
+        padding: var(--space-sm) var(--space-md);
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-primary);
+        border-radius: var(--radius-xl);
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: var(--transition);
+        white-space: nowrap;
+    }
+    
+    .mobile-prompt-chip:hover {
+        background: var(--accent-green-bg);
+        border-color: var(--accent-green-border);
+        color: var(--accent-green);
     }
 
     .docs-layout {
@@ -2115,7 +2260,8 @@ p {
 
     .cta-actions {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: var(--space-md);
     }
     
     /* Mobile Contact Form */
@@ -2134,7 +2280,10 @@ p {
     
     .contact-item {
         padding: var(--space-md);
-        text-align: center;
+        text-align: left;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-md);
     }
 }
 
