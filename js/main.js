@@ -280,9 +280,50 @@ function toggleFAQ(element) {
 
 // Mobile menu toggle
 function toggleMobileMenu() {
-    // Implementation for mobile menu
-    alert('Mobile menu would toggle here');
+    const dropdown = document.getElementById('mobileNavDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('active');
+        
+        // Close mobile prompts if open
+        const mobilePrompts = document.getElementById('mobilePromptsDropdown');
+        if (mobilePrompts) {
+            mobilePrompts.classList.remove('active');
+        }
+    }
 }
+
+// Mobile prompts toggle
+function toggleMobilePrompts() {
+    const dropdown = document.getElementById('mobilePromptsDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('active');
+    }
+}
+
+function hideMobilePrompts() {
+    const dropdown = document.getElementById('mobilePromptsDropdown');
+    if (dropdown) {
+        dropdown.classList.remove('active');
+    }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+    const mobileNav = document.getElementById('mobileNavDropdown');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const mobilePrompts = document.getElementById('mobilePromptsDropdown');
+    const mobilePromptsToggle = document.querySelector('.mobile-prompts-toggle');
+    
+    // Close mobile nav if clicking outside
+    if (mobileNav && !mobileNav.contains(e.target) && !mobileMenu.contains(e.target)) {
+        mobileNav.classList.remove('active');
+    }
+    
+    // Close mobile prompts if clicking outside
+    if (mobilePrompts && !mobilePrompts.contains(e.target) && mobilePromptsToggle && !mobilePromptsToggle.contains(e.target)) {
+        mobilePrompts.classList.remove('active');
+    }
+});
 
 // Add scroll effect to nav
 window.addEventListener('scroll', () => {
