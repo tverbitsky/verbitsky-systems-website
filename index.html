@@ -27,6 +27,16 @@
             </div>
             <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
         </div>
+        <div id="mobileNavDropdown" class="mobile-nav-dropdown">
+            <div class="mobile-nav-links">
+                <a href="/" class="nav-link" data-page="home">🏠 Home</a>
+                <a href="/about" class="nav-link" data-page="about">👥 About</a>
+                <a href="/ai-assistant" class="nav-link" data-page="ai-assistant">🤖 AI Assistant</a>
+                <a href="/knowledge-base" class="nav-link" data-page="knowledge-base">📚 Knowledge Base</a>
+                <a href="/support" class="nav-link" data-page="support">🛠️ Support</a>
+                <a href="/contact" class="nav-cta" data-page="contact">📞 Contact</a>
+            </div>
+        </div>
     </nav>
 
     <!-- Home Page -->
@@ -314,6 +324,33 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Mobile Chat Header -->
+            <div class="mobile-chat-header">
+                <button class="mobile-prompts-toggle" onclick="toggleMobilePrompts()">
+                    <span>💡 Quick Prompts</span>
+                    <span>▼</span>
+                </button>
+                <div id="mobilePromptsDropdown" class="mobile-prompts-dropdown">
+                    <div class="quick-prompt" onclick="insertPrompt('My PLC is showing communication errors with the HMI. How do I troubleshoot this?'); hideMobilePrompts();">
+                        <div class="quick-prompt-title">PLC Communication</div>
+                        <div class="quick-prompt-desc">HMI connection issues</div>
+                    </div>
+                    <div class="quick-prompt" onclick="insertPrompt('Motor is overheating during operation. What should I check?'); hideMobilePrompts();">
+                        <div class="quick-prompt-title">Motor Diagnostics</div>
+                        <div class="quick-prompt-desc">Thermal protection</div>
+                    </div>
+                    <div class="quick-prompt" onclick="insertPrompt('Safety system won\'t reset after E-stop. Walk me through the process.'); hideMobilePrompts();">
+                        <div class="quick-prompt-title">Safety Systems</div>
+                        <div class="quick-prompt-desc">E-stop reset procedure</div>
+                    </div>
+                    <div class="quick-prompt" onclick="insertPrompt('Sensor readings are inconsistent. How do I diagnose this?'); hideMobilePrompts();">
+                        <div class="quick-prompt-title">Sensor Issues</div>
+                        <div class="quick-prompt-desc">Signal diagnostics</div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="chat-main">
                 <div class="chat-header">
                     <div class="chat-header-content">
@@ -626,29 +663,33 @@
         <div class="container">
             <div class="section-header">
                 <h1 class="section-title">Ready to Get Started?</h1>
-                <p class="section-subtitle">Ready to deploy industrial AI that works? Let's talk.</p>
+                <p class="section-subtitle">Deploy industrial AI that works. Let's discuss your specific needs.</p>
             </div>
             
             <div class="contact-grid">
                 <div class="contact-form">
+                    <h3>Send us a message</h3>
                     <form onsubmit="handleContactSubmit(event)">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="Enter your full name">
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="your.email@company.com">
                         </div>
                         <div class="form-group">
                             <label for="company">Company</label>
-                            <input type="text" id="company" name="company">
+                            <input type="text" id="company" name="company" placeholder="Your Company Name">
                         </div>
                         <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell us about your industrial automation needs..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-large">Send Message</button>
+                        <button type="submit" class="btn btn-primary btn-large">
+                            <span>📧</span>
+                            Send Message
+                        </button>
                     </form>
                 </div>
                 
@@ -658,13 +699,32 @@
                     
                     <div class="contact-details">
                         <div class="contact-item">
-                            <strong>Email:</strong> tyler@verbitskysystems.com
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-content">
+                                <strong>Email:</strong><br>
+                                <a href="mailto:tyler@verbitskysystems.com">tyler@verbitskysystems.com</a>
+                            </div>
                         </div>
                         <div class="contact-item">
-                            <strong>Response Time:</strong> Within 24 hours
+                            <div class="contact-icon">⏱️</div>
+                            <div class="contact-content">
+                                <strong>Response Time:</strong><br>
+                                Within 24 hours
+                            </div>
                         </div>
                         <div class="contact-item">
-                            <strong>Consultation:</strong> Free initial assessment
+                            <div class="contact-icon">💬</div>
+                            <div class="contact-content">
+                                <strong>Consultation:</strong><br>
+                                Free initial assessment
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🏭</div>
+                            <div class="contact-content">
+                                <strong>Specialization:</strong><br>
+                                Industrial automation & AI
+                            </div>
                         </div>
                     </div>
                 </div>
