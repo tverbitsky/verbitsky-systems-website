@@ -3,94 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <title>Industrial AI Solutions | Verbitsky Systems - Equipment Diagnostics & Automation</title>
-    <meta name="description" content="Deploy AI-powered troubleshooting for industrial equipment. PLC programming, motor diagnostics, safety systems, and SCADA integration. On-premise, secure, sub-second response times.">
-    <meta name="keywords" content="industrial AI, equipment diagnostics, PLC troubleshooting, motor diagnostics, safety systems, SCADA integration, industrial automation, on-premise AI">
-    <meta name="author" content="Verbitsky Systems">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://verbitskysystems.com/">
-    <meta property="og:title" content="Industrial AI Solutions | Verbitsky Systems">
-    <meta property="og:description" content="Deploy AI-powered troubleshooting for industrial equipment. On-premise, secure, sub-second response times.">
-    <meta property="og:image" content="https://verbitskysystems.com/images/industrial-ai-hero.jpg">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://verbitskysystems.com/">
-    <meta property="twitter:title" content="Industrial AI Solutions | Verbitsky Systems">
-    <meta property="twitter:description" content="Deploy AI-powered troubleshooting for industrial equipment. On-premise, secure, sub-second response times.">
-    <meta property="twitter:image" content="https://verbitskysystems.com/images/industrial-ai-hero.jpg">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://verbitskysystems.com/">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Verbitsky Systems",
-        "description": "Industrial AI solutions for equipment diagnostics and automation",
-        "url": "https://verbitskysystems.com",
-        "logo": "https://verbitskysystems.com/images/logo.png",
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+1-555-0123",
-            "contactType": "customer service",
-            "email": "tyler@verbitskysystems.com"
-        },
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "US"
-        },
-        "sameAs": [
-            "https://linkedin.com/company/verbitsky-systems"
-        ]
-    }
-    </script>
-    
+    <title>Verbitsky Systems - Industrial AI Solutions</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
-            <a href="/" class="logo">
+            <a href="#home" class="logo" onclick="showPage('home')">
                 <div class="logo-icon"></div>
-                <span>Verbitsky Systems</span>
+                Verbitsky Systems
             </a>
             <div class="nav-links">
-                <a href="/" class="nav-link" data-page="home">Home</a>
-                <a href="/about" class="nav-link" data-page="about">About</a>
-                <a href="/ai-assistant" class="nav-link" data-page="ai-assistant">AI Assistant</a>
-                <a href="/knowledge-base" class="nav-link" data-page="knowledge-base">Knowledge Base</a>
-                <a href="/support" class="nav-link" data-page="support">Support</a>
-                <a href="/contact" class="nav-cta" data-page="contact">Contact</a>
+                <a href="#home" class="nav-link active" onclick="showPage('home')">Home</a>
+                <a href="#about" class="nav-link" onclick="showPage('about')">About</a>
+                <a href="#ai-assistant" class="nav-link" onclick="showPage('ai-assistant')">AI Assistant</a>
+                <a href="#knowledge-base" class="nav-link" onclick="showPage('knowledge-base')">Knowledge Base</a>
+                <a href="#support" class="nav-link" onclick="showPage('support')">Support</a>
+                <a href="#contact" class="nav-cta" onclick="showPage('contact')">Contact</a>
             </div>
             <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
-        </div>
-        <div id="mobileNavDropdown" class="mobile-nav-dropdown">
-            <div class="mobile-nav-links">
-                <a href="/" class="nav-link" data-page="home">🏠 Home</a>
-                <a href="/about" class="nav-link" data-page="about">👥 About</a>
-                <a href="/ai-assistant" class="nav-link" data-page="ai-assistant">🤖 AI Assistant</a>
-                <a href="/knowledge-base" class="nav-link" data-page="knowledge-base">📚 Knowledge Base</a>
-                <a href="/support" class="nav-link" data-page="support">🛠️ Support</a>
-                <a href="/contact" class="nav-cta" data-page="contact">📞 Contact</a>
-            </div>
         </div>
     </nav>
 
@@ -99,34 +34,15 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="container">
-                <div class="hero-content">
-                    <div class="hero-text">
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span>Industrial AI Solutions</span>
-                        </div>
-                        <h1 class="hero-title">Minimal Complexity.<br>Maximum Efficiency.</h1>
-                        <p class="hero-subtitle">
-                            Deploy AI-powered troubleshooting directly on your infrastructure. 
-                            Clean design, pure function, zero compromises.
-                        </p>
-                        <div class="hero-actions">
-                            <a href="/ai-assistant" class="btn btn-primary">
-                                Get Started
-                                <span>→</span>
-                            </a>
-                            <a href="/about" class="btn btn-secondary">
-                                Learn More
-                                <span>↗</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="hero-visual">
-                        <div class="hero-image">
-                            <img src="images/industrial-ai-hero.jpg" alt="Industrial AI Solutions" />
-                            <div class="hero-overlay"></div>
-                        </div>
-                    </div>
+                <div class="hero-badge">
+                    <div class="badge-dot"></div>
+                    Industrial AI Platform
+                </div>
+                <h1 class="hero-title">Minimal Complexity.<br>Maximum Efficiency.</h1>
+                <p class="hero-subtitle">Deploy AI-powered troubleshooting directly on your infrastructure. Clean design, pure function, zero compromises.</p>
+                <div class="hero-actions">
+                    <a href="#ai-assistant" class="btn btn-primary" onclick="showPage('ai-assistant')">Try AI Assistant →</a>
+                    <a href="#about" class="btn btn-secondary" onclick="showPage('about')">Learn More</a>
                 </div>
             </div>
         </section>
@@ -136,19 +52,20 @@
             <div class="container">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">100%</div>
-                        <div class="stat-label">On-Premise</div>
-                        <div class="stat-description">Complete on-premise deployment. Your data never leaves your facility. Full compliance with industry standards.</div>
+                        <div class="stat-value">99.9%</div>
+                        <div class="stat-label">Uptime Guarantee</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">&lt;1s</div>
+                        <div class="stat-value">&lt;500ms</div>
                         <div class="stat-label">Response Time</div>
-                        <div class="stat-description">Sub-second response times for equipment diagnostics. Reduce downtime by 90% with intelligent troubleshooting.</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">24/7</div>
-                        <div class="stat-label">Reliability</div>
-                        <div class="stat-description">Purpose-built for industrial automation. Works seamlessly with PLCs, SCADA systems, and existing infrastructure.</div>
+                        <div class="stat-value">90%</div>
+                        <div class="stat-label">Downtime Reduction</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">Zero</div>
+                        <div class="stat-label">Data Leakage</div>
                     </div>
                 </div>
             </div>
@@ -158,47 +75,26 @@
         <section class="features">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Industrial AI That Actually Works</h2>
-                    <p class="section-subtitle">
-                        We've spent years in industrial automation, and we know the challenges you face. 
-                        That's why we built our AI to understand the language of industry.
-                    </p>
+                    <h2 class="section-title">Built for Industrial Environments</h2>
+                    <p class="section-subtitle">Complete on-premise deployment. Your data never leaves your facility. Full compliance with industry standards.</p>
                 </div>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">🔧</div>
                         <h3 class="feature-title">Equipment Diagnostics</h3>
-                        <p class="feature-description">
-                            AI-powered analysis of PLCs, motor drives, and safety systems. 
-                            Get instant troubleshooting recommendations based on real-time data.
-                        </p>
+                        <p class="feature-description">Sub-second response times for equipment diagnostics. Reduce downtime by 90% with intelligent troubleshooting.</p>
+                        <div class="pattern-circuit"></div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏭</div>
+                        <h3 class="feature-title">Industrial Integration</h3>
+                        <p class="feature-description">Purpose-built for industrial automation. Works seamlessly with PLCs, SCADA systems, and existing infrastructure.</p>
                         <div class="pattern-circuit"></div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🔒</div>
-                        <h3 class="feature-title">Zero Data Leakage</h3>
-                        <p class="feature-description">
-                            Complete air-gapped deployment. Your sensitive industrial data stays 
-                            within your facility, ensuring maximum security and compliance.
-                        </p>
-                        <div class="pattern-circuit"></div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">⚡</div>
-                        <h3 class="feature-title">Instant Integration</h3>
-                        <p class="feature-description">
-                            Seamlessly connects to existing SCADA systems, HMIs, and industrial networks. 
-                            No disruption to your current operations.
-                        </p>
-                        <div class="pattern-circuit"></div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h3 class="feature-title">Intelligent Analytics</h3>
-                        <p class="feature-description">
-                            Advanced pattern recognition identifies issues before they become problems. 
-                            Predictive maintenance that actually predicts.
-                        </p>
+                        <h3 class="feature-title">Security First</h3>
+                        <p class="feature-description">Complete efficiency and minimal overhead.</p>
                         <div class="pattern-circuit"></div>
                     </div>
                 </div>
@@ -206,95 +102,42 @@
         </section>
 
         <!-- Philosophy Section -->
-        <section class="philosophy">
+        <section class="about-content">
             <div class="container">
-                <div class="philosophy-content">
-                    <div class="philosophy-text">
-                        <h2 class="section-title">Our Philosophy</h2>
-                        <p class="philosophy-description">
-                            In a world of complex solutions, we choose simplicity. Our AI platform is designed 
-                            with a singular focus - help industrial teams solve problems faster, safer, and smarter.
-                        </p>
-                        <div class="philosophy-points">
-                            <div class="philosophy-point">
-                                <div class="point-icon">✓</div>
-                                <div class="point-text">No cloud dependencies</div>
-                            </div>
-                            <div class="philosophy-point">
-                                <div class="point-icon">✓</div>
-                                <div class="point-text">No vendor lock-in</div>
-                            </div>
-                            <div class="philosophy-point">
-                                <div class="point-icon">✓</div>
-                                <div class="point-text">No compromises on security</div>
-                            </div>
-                        </div>
-                        <p class="philosophy-conclusion">
-                            Just pure, functional AI that runs on your infrastructure and respects your data sovereignty.
-                        </p>
-                    </div>
-                    <div class="philosophy-visual">
-                        <div class="philosophy-graphic">
-                            <div class="graphic-element graphic-1"></div>
-                            <div class="graphic-element graphic-2"></div>
-                            <div class="graphic-element graphic-3"></div>
-                        </div>
-                    </div>
+                <div class="content-section">
+                    <h2>Our Philosophy</h2>
+                    <p>We believe in doing one thing exceptionally well: industrial AI that actually works. Our Philosophy: In a world of complex solutions, we choose simplicity. Our AI platform is designed with a singular focus - help industrial teams solve problems faster, safer, and smarter. No cloud dependencies. No vendor lock-in. No compromises on security.</p>
+                    <p>Just pure, functional AI that runs on your infrastructure and respects your data sovereignty.</p>
                 </div>
             </div>
         </section>
 
         <!-- Team Section -->
-        <section class="team">
+        <section class="features">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title">Meet Our Team</h2>
-                    <p class="section-subtitle">
-                        Industrial automation experts dedicated to solving real-world problems.
-                    </p>
+                    <h2 class="section-title">Our Team</h2>
                 </div>
                 <div class="team-grid">
                     <div class="team-member">
                         <div class="member-avatar">TV</div>
-                        <h3 class="member-name">Tyler Verbitsky</h3>
-                        <p class="member-role">Founder & CEO</p>
+                        <div class="member-name">Tyler Verbitsky</div>
+                        <div class="member-role">Founder & CEO</div>
                     </div>
                     <div class="team-member">
                         <div class="member-avatar">AI</div>
-                        <h3 class="member-name">AI Engineering Team</h3>
-                        <p class="member-role">Core Development</p>
+                        <div class="member-name">AI Engineering</div>
+                        <div class="member-role">AI Team Engineering</div>
                     </div>
                     <div class="team-member">
                         <div class="member-avatar">CS</div>
-                        <h3 class="member-name">Customer Success</h3>
-                        <p class="member-role">Implementation</p>
+                        <div class="member-name">Customer Success</div>
+                        <div class="member-role">Customer Success</div>
                     </div>
                     <div class="team-member">
-                        <div class="member-avatar">24</div>
-                        <h3 class="member-name">Support Team</h3>
-                        <p class="member-role">24/7 Technical Support</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="cta">
-            <div class="container">
-                <div class="cta-content">
-                    <h2 class="cta-title">Ready to deploy industrial AI that works?</h2>
-                    <p class="cta-subtitle">
-                        Let's discuss how our platform can solve your specific industrial challenges.
-                    </p>
-                    <div class="cta-actions">
-                        <a href="/contact" class="btn btn-primary btn-large">
-                            Get Started Today
-                            <span>→</span>
-                        </a>
-                        <a href="/ai-assistant" class="btn btn-secondary btn-large">
-                            Try AI Assistant
-                            <span>🤖</span>
-                        </a>
+                        <div class="member-avatar">SP</div>
+                        <div class="member-name">Support Team</div>
+                        <div class="member-role">Support</div>
                     </div>
                 </div>
             </div>
@@ -312,36 +155,16 @@
     <div id="about" class="page">
         <div class="about-hero">
             <div class="container">
-                <h1 class="section-title">About Verbitsky Systems</h1>
-                <p class="section-subtitle">Transforming industrial operations through intelligent automation</p>
+                <h1 class="hero-title">About Verbitsky Systems</h1>
+                <p class="hero-subtitle">We've spent years in industrial automation, and we know the challenges you face. That's why we built our AI to understand the language of industry - from PLCs to motor drives, from safety systems to SCADA networks.</p>
             </div>
         </div>
+        
         <div class="about-content">
             <div class="container">
                 <div class="content-section">
                     <h2>Our Mission</h2>
-                    <p>We believe in doing one thing exceptionally well: industrial AI that actually works. Our minimalist design philosophy extends beyond aesthetics. It's about removing complexity from your operations, not adding to it.</p>
-                </div>
-                <div class="content-section">
-                    <h2>Why We're Different</h2>
-                    <p>Clean interfaces, clear answers, and zero friction between you and the solutions you need. We understand that in industrial environments, reliability isn't just important—it's everything.</p>
-                </div>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="member-avatar">TV</div>
-                        <h3 class="member-name">Tyler Verbitsky</h3>
-                        <p class="member-role">Founder & CEO</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-avatar">AI</div>
-                        <h3 class="member-name">AI Team</h3>
-                        <p class="member-role">Engineering</p>
-                    </div>
-                    <div class="team-member">
-                        <div class="member-avatar">CS</div>
-                        <h3 class="member-name">Customer Success</h3>
-                        <p class="member-role">Support</p>
-                    </div>
+                    <p>Our minimalist design philosophy extends beyond aesthetics. It's about removing complexity from your operations, not adding to it. Clean interfaces, clear answers, and zero friction between you and the solutions they need.</p>
                 </div>
             </div>
         </div>
@@ -350,75 +173,109 @@
     <!-- AI Assistant Page -->
     <div id="ai-assistant" class="page">
         <div class="chat-container">
-            <!-- Sidebar Toggle Button -->
-            <button class="sidebar-toggle" onclick="toggleChatSidebar()" title="Toggle sidebar">
-                <span id="sidebarToggleIcon">☰</span>
-            </button>
-            
-            <div id="chatSidebar" class="chat-sidebar">
+            <!-- Sidebar -->
+            <div class="chat-sidebar">
                 <div class="sidebar-section">
                     <h3 class="sidebar-title">Quick Prompts</h3>
-                    <div class="quick-prompt" onclick="insertPrompt('My PLC is showing communication errors with the HMI. How do I troubleshoot this?')">
+                    <div class="quick-prompt" onclick="insertPrompt('PLC Communication HMI connection issues')">
                         <div class="quick-prompt-title">PLC Communication</div>
                         <div class="quick-prompt-desc">HMI connection issues</div>
                     </div>
-                    <div class="quick-prompt" onclick="insertPrompt('Motor is overheating during operation. What should I check?')">
+                    <div class="quick-prompt" onclick="insertPrompt('Motor Diagnostics Thermal protection')">
                         <div class="quick-prompt-title">Motor Diagnostics</div>
                         <div class="quick-prompt-desc">Thermal protection</div>
                     </div>
-                    <div class="quick-prompt" onclick="insertPrompt('Safety system won\'t reset after E-stop. Walk me through the process.')">
+                    <div class="quick-prompt" onclick="insertPrompt('Safety Systems E-stop reset procedure')">
                         <div class="quick-prompt-title">Safety Systems</div>
                         <div class="quick-prompt-desc">E-stop reset procedure</div>
                     </div>
-                    <div class="quick-prompt" onclick="insertPrompt('Sensor readings are inconsistent. How do I diagnose this?')">
+                    <div class="quick-prompt" onclick="insertPrompt('Sensor Issues Signal diagnostics')">
                         <div class="quick-prompt-title">Sensor Issues</div>
                         <div class="quick-prompt-desc">Signal diagnostics</div>
                     </div>
                 </div>
+
                 <div class="sidebar-section">
                     <h3 class="sidebar-title">Chat History</h3>
-                    <div class="chat-history">
-                        <div class="history-item">PLC Troubleshooting Session</div>
-                        <div class="history-item">Motor Drive Configuration</div>
-                        <div class="history-item">Safety System Reset</div>
+                    <div class="quick-prompt">
+                        <div class="quick-prompt-title">PLC Troubleshooting Session</div>
+                        <div class="quick-prompt-desc">2 hours ago</div>
+                    </div>
+                    <div class="quick-prompt">
+                        <div class="quick-prompt-title">Motor Drive Configuration</div>
+                        <div class="quick-prompt-desc">1 day ago</div>
+                    </div>
+                    <div class="quick-prompt">
+                        <div class="quick-prompt-title">Safety System Reset</div>
+                        <div class="quick-prompt-desc">3 days ago</div>
                     </div>
                 </div>
             </div>
-            
+
+            <!-- Main Chat Area -->
             <div class="chat-main">
+                <!-- Chat Header -->
                 <div class="chat-header">
                     <div class="chat-header-content">
-                        <h2>AI Diagnostics Assistant</h2>
-                        <div class="chat-status">
-                            <div class="status-indicator"></div>
-                            <span>Ready to assist with industrial equipment diagnostics</span>
+                        <div>
+                            <h1 class="chat-title">AI Diagnostics Assistant</h1>
+                            <p class="chat-subtitle">Ready to assist with industrial equipment diagnostics</p>
+                        </div>
+                        <div class="chat-info">
+                            <div class="chat-status">
+                                <div class="status-indicator"></div>
+                                Ready to assist with industrial equipment diagnostics
+                            </div>
+                            <div style="margin-top: 0.25rem;">
+                                <span id="messageCount">5</span> messages
+                            </div>
                         </div>
                     </div>
-                    <div class="chat-stats">
-                        <span id="messageCount">0</span> messages
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="insertPrompt('🔧 PLC Communication')">🔧 PLC Communication</button>
+                    <button class="quick-action-btn" onclick="insertPrompt('🔥 Motor Diagnostics')">🔥 Motor Diagnostics</button>
+                    <button class="quick-action-btn" onclick="insertPrompt('🔵 Safety Systems')">🔵 Safety Systems</button>
+                    <button class="quick-action-btn" onclick="insertPrompt('📡 Sensor Issues')">📡 Sensor Issues</button>
+                </div>
+
+                <!-- Messages -->
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message">
+                        <div class="message-avatar ai">AI</div>
+                        <div class="message-content">
+                            I can help with:<br><br>
+                            • <strong>PLC Communication</strong> - Network issues, protocol errors<br>
+                            • <strong>Motor Diagnostics</strong> - Overheating, vibration analysis<br>
+                            • <strong>Safety Systems</strong> - E-stop circuits, light curtains<br>
+                            • <strong>Sensor Issues</strong> - Calibration, signal integrity<br><br>
+                            What equipment issue can I help troubleshoot?
+                        </div>
+                    </div>
+
+                    <div class="message user">
+                        <div class="message-avatar user">You</div>
+                        <div class="message-content">
+                            Sensor readings are inconsistent. How do I diagnose this?
+                        </div>
+                    </div>
+
+                    <div class="message">
+                        <div class="message-avatar ai">AI</div>
+                        <div class="message-content">
+                            <strong>Sensor Diagnostics:</strong><br><br>
+                            1. <strong>Power supply</strong> - Verify 24VDC<br>
+                            2. <strong>Wiring</strong> - Check for damage/EMI<br>
+                            3. <strong>Signal test</strong> - Measure with multimeter<br>
+                            4. <strong>Mounting</strong> - Proper alignment<br><br>
+                            What sensor type and expected vs actual output?
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Desktop Quick Prompts -->
-                <div class="desktop-prompts">
-                    <div class="desktop-prompt-chip" onclick="insertPrompt('PLC communication error troubleshooting')">🔧 PLC Communication</div>
-                    <div class="desktop-prompt-chip" onclick="insertPrompt('Motor overheating diagnosis and solutions')">⚡ Motor Diagnostics</div>
-                    <div class="desktop-prompt-chip" onclick="insertPrompt('Safety system reset procedure and troubleshooting')">🛡️ Safety Systems</div>
-                    <div class="desktop-prompt-chip" onclick="insertPrompt('Sensor calibration and signal analysis help')">📊 Sensor Issues</div>
-                </div>
-                
-                <!-- Mobile Quick Prompts -->
-                <div class="mobile-prompts">
-                    <div class="mobile-prompt-chip" onclick="insertPrompt('PLC communication error troubleshooting')">🔧 PLC Issues</div>
-                    <div class="mobile-prompt-chip" onclick="insertPrompt('Motor overheating diagnosis')">⚡ Motor Problems</div>
-                    <div class="mobile-prompt-chip" onclick="insertPrompt('Safety system reset procedure')">🛡️ Safety Systems</div>
-                    <div class="mobile-prompt-chip" onclick="insertPrompt('Sensor calibration help')">📊 Sensor Issues</div>
-                </div>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <!-- Messages will be added here dynamically -->
-                </div>
-                
+
+                <!-- Input Area -->
                 <div class="chat-input-container">
                     <div class="chat-input-wrapper">
                         <textarea 
@@ -427,8 +284,11 @@
                             placeholder="Ask me about your industrial equipment..."
                             rows="1"
                         ></textarea>
-                        <button class="chat-send" onclick="sendMessage()" title="Send message">
-                            <span>→</span>
+                        <button class="chat-send" onclick="sendMessage()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -440,13 +300,14 @@
     <div id="knowledge-base" class="page">
         <div class="docs-header">
             <div class="container">
-                <h1 class="section-title">Knowledge Base</h1>
-                <p class="section-subtitle">Comprehensive documentation and resources for industrial AI implementation</p>
+                <h1 class="hero-title">Knowledge Base</h1>
+                <p class="hero-subtitle">Document management and search system</p>
             </div>
         </div>
-        
+
         <div class="container">
             <div class="docs-layout">
+                <!-- Sidebar -->
                 <div class="docs-sidebar">
                     <div class="sidebar-section">
                         <h3 class="sidebar-title">Categories</h3>
@@ -455,25 +316,24 @@
                                 <span class="category-name">All Documents</span>
                                 <span class="category-count">24</span>
                             </div>
-                            <div class="category-item" onclick="filterByCategory('installation')">
-                                <span class="category-name">Installation Guides</span>
+                            <div class="category-item" onclick="filterByCategory('manuals')">
+                                <span class="category-name">Equipment Manuals</span>
                                 <span class="category-count">8</span>
+                            </div>
+                            <div class="category-item" onclick="filterByCategory('procedures')">
+                                <span class="category-name">Procedures</span>
+                                <span class="category-count">6</span>
                             </div>
                             <div class="category-item" onclick="filterByCategory('troubleshooting')">
                                 <span class="category-name">Troubleshooting</span>
-                                <span class="category-count">12</span>
-                            </div>
-                            <div class="category-item" onclick="filterByCategory('api')">
-                                <span class="category-name">API Documentation</span>
-                                <span class="category-count">4</span>
+                                <span class="category-count">10</span>
                             </div>
                         </div>
                         <button class="add-category-btn" onclick="addCategory()">
-                            <span>+</span>
-                            <span>Add Category</span>
+                            + Add Category
                         </button>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-title">Storage Info</h3>
                         <div class="stats-box">
@@ -492,113 +352,76 @@
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Main Content -->
                 <div class="docs-content">
+                    <!-- Search and Filters -->
                     <div class="docs-search">
                         <input type="text" class="search-input" placeholder="Search documents..." onkeyup="searchDocuments(this.value)">
                         <div class="search-filters">
                             <select class="filter-select">
-                                <option value="">Sort by</option>
+                                <option value="">All Formats</option>
+                                <option value="pdf">PDF</option>
+                                <option value="word">Word</option>
+                                <option value="text">Text</option>
+                            </select>
+                            <select class="filter-select">
                                 <option value="date">Date Added</option>
                                 <option value="name">Name</option>
                                 <option value="size">Size</option>
                             </select>
-                            <button class="btn btn-primary" onclick="openUploadModal()">
-                                <span>+</span>
-                                <span>Upload</span>
-                            </button>
                         </div>
+                        <button class="btn btn-primary" onclick="openUploadModal()">+ Upload Documents</button>
                     </div>
-                    
+
+                    <!-- Document Grid -->
                     <div class="document-grid">
-                        <div class="document-card" data-category="installation">
+                        <div class="document-card" data-category="manuals">
+                            <div class="doc-icon">📄</div>
+                            <div class="doc-info">
+                                <div class="doc-title">Allen-Bradley PLC Manual</div>
+                                <div class="doc-meta">PDF • 2.4 MB • Added 3 days ago</div>
+                                <div class="doc-category-tag">Equipment Manuals</div>
+                            </div>
+                            <div class="doc-actions">
+                                <div class="doc-action" title="Download">⬇</div>
+                                <div class="doc-action" title="View">👁</div>
+                                <div class="doc-action" title="Delete">🗑</div>
+                            </div>
+                        </div>
+
+                        <div class="document-card" data-category="troubleshooting">
                             <div class="doc-icon">📋</div>
                             <div class="doc-info">
-                                <h3 class="doc-title">Quick Start Guide</h3>
-                                <div class="doc-meta">PDF • 2.4 MB • 3 days ago</div>
-                                <div class="doc-category-tag">Installation</div>
-                            </div>
-                            <div class="doc-actions">
-                                <button class="doc-action" title="View">👁</button>
-                                <button class="doc-action" title="Download">⬇</button>
-                                <button class="doc-action" title="Delete">🗑</button>
-                            </div>
-                        </div>
-                        
-                        <div class="document-card" data-category="troubleshooting">
-                            <div class="doc-icon">🔧</div>
-                            <div class="doc-info">
-                                <h3 class="doc-title">PLC Troubleshooting Manual</h3>
-                                <div class="doc-meta">PDF • 8.1 MB • 1 week ago</div>
+                                <div class="doc-title">Motor Troubleshooting Guide</div>
+                                <div class="doc-meta">PDF • 1.8 MB • Added 1 week ago</div>
                                 <div class="doc-category-tag">Troubleshooting</div>
                             </div>
                             <div class="doc-actions">
-                                <button class="doc-action" title="View">👁</button>
-                                <button class="doc-action" title="Download">⬇</button>
-                                <button class="doc-action" title="Delete">🗑</button>
-                            </div>
-                        </div>
-                        
-                        <div class="document-card" data-category="api">
-                            <div class="doc-icon">📡</div>
-                            <div class="doc-info">
-                                <h3 class="doc-title">API Integration Guide</h3>
-                                <div class="doc-meta">PDF • 1.2 MB • 2 weeks ago</div>
-                                <div class="doc-category-tag">API</div>
-                            </div>
-                            <div class="doc-actions">
-                                <button class="doc-action" title="View">👁</button>
-                                <button class="doc-action" title="Download">⬇</button>
-                                <button class="doc-action" title="Delete">🗑</button>
+                                <div class="doc-action" title="Download">⬇</div>
+                                <div class="doc-action" title="View">👁</div>
+                                <div class="doc-action" title="Delete">🗑</div>
                             </div>
                         </div>
 
-                        <div class="document-card" data-category="installation">
-                            <div class="doc-icon">⚙️</div>
+                        <div class="document-card" data-category="procedures">
+                            <div class="doc-icon">📝</div>
                             <div class="doc-info">
-                                <h3 class="doc-title">System Requirements</h3>
-                                <div class="doc-meta">PDF • 1.8 MB • 1 week ago</div>
-                                <div class="doc-category-tag">Installation</div>
+                                <div class="doc-title">Safety Lockout Procedure</div>
+                                <div class="doc-meta">Word • 1.2 MB • Added 2 weeks ago</div>
+                                <div class="doc-category-tag">Procedures</div>
                             </div>
                             <div class="doc-actions">
-                                <button class="doc-action" title="View">👁</button>
-                                <button class="doc-action" title="Download">⬇</button>
-                                <button class="doc-action" title="Delete">🗑</button>
-                            </div>
-                        </div>
-
-                        <div class="document-card" data-category="troubleshooting">
-                            <div class="doc-icon">🛠️</div>
-                            <div class="doc-info">
-                                <h3 class="doc-title">Motor Drive Diagnostics</h3>
-                                <div class="doc-meta">PDF • 5.3 MB • 4 days ago</div>
-                                <div class="doc-category-tag">Troubleshooting</div>
-                            </div>
-                            <div class="doc-actions">
-                                <button class="doc-action" title="View">👁</button>
-                                <button class="doc-action" title="Download">⬇</button>
-                                <button class="doc-action" title="Delete">🗑</button>
-                            </div>
-                        </div>
-
-                        <div class="document-card" data-category="api">
-                            <div class="doc-icon">🔗</div>
-                            <div class="doc-info">
-                                <h3 class="doc-title">REST API Reference</h3>
-                                <div class="doc-meta">PDF • 3.7 MB • 1 week ago</div>
-                                <div class="doc-category-tag">API</div>
-                            </div>
-                            <div class="doc-actions">
-                                <button class="doc-action" title="View">👁</button>
-                                <button class="doc-action" title="Download">⬇</button>
-                                <button class="doc-action" title="Delete">🗑</button>
+                                <div class="doc-action" title="Download">⬇</div>
+                                <div class="doc-action" title="View">👁</div>
+                                <div class="doc-action" title="Delete">🗑</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Upload Modal -->
         <div id="uploadModal" class="modal">
             <div class="modal-content">
@@ -607,12 +430,13 @@
                     <button class="modal-close" onclick="closeUploadModal()">×</button>
                 </div>
                 
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-icon">📁</div>
+                <div id="uploadArea" class="upload-area">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
                     <div class="upload-text">Drag and drop files here or click to browse</div>
                     <div class="upload-subtext">Supports PDF, DOC, DOCX, TXT<br>Max 50MB per file</div>
-                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt" style="display: none;">
                 </div>
+                
+                <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.txt" style="display: none;">
                 
                 <div id="uploadQueue" class="upload-queue" style="display: none;">
                     <h3>Files to Upload</h3>
@@ -620,12 +444,11 @@
                 </div>
                 
                 <div class="upload-category-select">
-                    <label>Category:</label>
                     <select id="uploadCategory" class="category-select">
-                        <option value="">Select category</option>
-                        <option value="installation">Installation Guides</option>
+                        <option value="">Select Category</option>
+                        <option value="manuals">Equipment Manuals</option>
+                        <option value="procedures">Procedures</option>
                         <option value="troubleshooting">Troubleshooting</option>
-                        <option value="api">API Documentation</option>
                     </select>
                 </div>
                 
@@ -639,59 +462,52 @@
 
     <!-- Support Page -->
     <div id="support" class="page">
-        <div class="container">
-            <div class="section-header">
-                <h1 class="section-title">Support & Resources</h1>
-                <p class="section-subtitle">Expert assistance, comprehensive documentation, and resources to keep you running.</p>
+        <div class="about-hero">
+            <div class="container">
+                <h1 class="hero-title">Support & Resources</h1>
+                <p class="hero-subtitle">Expert assistance, comprehensive documentation, and resources to keep you running.</p>
             </div>
-            
+        </div>
+
+        <div class="container">
             <div class="support-grid">
                 <div class="support-card">
                     <div class="support-icon">📚</div>
                     <h3 class="support-title">Documentation</h3>
                     <p class="support-description">Comprehensive guides, API references, and integration tutorials to help you get the most from our platform.</p>
-                    <a href="/knowledge-base" class="support-link">
-                        Browse Documentation
-                        <span>→</span>
-                    </a>
+                    <a href="#knowledge-base" class="support-link" onclick="showPage('knowledge-base')">Browse Docs →</a>
                 </div>
-                
+
                 <div class="support-card">
-                    <div class="support-icon">💬</div>
+                    <div class="support-icon">🎧</div>
                     <h3 class="support-title">Expert Support</h3>
                     <p class="support-description">Connect with our industrial automation experts for personalized assistance and troubleshooting.</p>
-                    <a href="/contact" class="support-link">
-                        Contact Support
-                        <span>→</span>
-                    </a>
+                    <a href="#contact" class="support-link" onclick="showPage('contact')">Contact Support →</a>
                 </div>
-                
+
                 <div class="support-card">
                     <div class="support-icon">🎓</div>
-                    <h3 class="support-title">Training Resources</h3>
+                    <h3 class="support-title">Training</h3>
                     <p class="support-description">Online courses and workshops to help your team maximize the platform's capabilities.</p>
-                    <a href="#" class="support-link">
-                        View Training
-                        <span>→</span>
-                    </a>
+                    <a href="#" class="support-link">View Training →</a>
                 </div>
-                
+
                 <div class="support-card">
                     <div class="support-icon">📊</div>
                     <h3 class="support-title">System Status</h3>
                     <p class="support-description">Real-time monitoring of platform performance and scheduled maintenance updates.</p>
-                    <a href="#" class="support-link">
-                        Check Status
-                        <span>→</span>
-                    </a>
+                    <a href="#" class="support-link">Check Status →</a>
                 </div>
             </div>
         </div>
-        
+
+        <!-- FAQ Section -->
         <div class="faq-section">
             <div class="container">
-                <h2 class="section-title">Frequently Asked Questions</h2>
-                
+                <div class="section-header">
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                </div>
+
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFAQ(this)">
                         <span>How long does deployment typically take?</span>
@@ -701,30 +517,30 @@
                         <p>Typical deployment takes 3-5 days for standard installations. This includes server setup, AI model deployment, and initial configuration. Complex integrations may require additional time.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>What equipment do you support?</span>
+                        <span>What equipment manufacturers do you support?</span>
                         <span class="faq-icon">▼</span>
                     </div>
                     <div class="faq-answer">
-                        <p>We support all major PLC manufacturers including Allen-Bradley, Siemens, Schneider Electric, Mitsubishi, and more. Our AI can work with any equipment that has documentation available.</p>
+                        <p>We support all major PLC manufacturers including Allen-Bradley, Siemens, Schneider Electric, Mitsubishi, and more. AI can work with any equipment that has documentation available.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>Is the system completely offline?</span>
+                        <span>Is the system completely air-gapped?</span>
                         <span class="faq-icon">▼</span>
                     </div>
                     <div class="faq-answer">
                         <p>Yes. The entire system runs on your servers with no external connections required. Your data never leaves your facility, ensuring complete privacy and security compliance.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFAQ(this)">
-                        <span>What kind of support do you provide?</span>
+                        <span>What support is included?</span>
                         <span class="faq-icon">▼</span>
                     </div>
                     <div class="faq-answer">
@@ -737,72 +553,56 @@
 
     <!-- Contact Page -->
     <div id="contact" class="page">
-        <div class="container">
-            <div class="section-header">
-                <h1 class="section-title">Ready to Get Started?</h1>
-                <p class="section-subtitle">Deploy industrial AI that works. Let's discuss your specific needs.</p>
+        <div class="about-hero">
+            <div class="container">
+                <h1 class="hero-title">Get Started Today</h1>
+                <p class="hero-subtitle">Ready to deploy industrial AI that works? Let's talk.</p>
             </div>
-            
-            <div class="contact-grid">
-                <div class="contact-form">
-                    <h3>Send us a message</h3>
+        </div>
+
+        <div class="container" style="padding: 4rem 0;">
+            <div class="support-grid">
+                <div class="support-card">
                     <form onsubmit="handleContactSubmit(event)">
-                        <div class="form-group">
-                            <label for="name">Full Name *</label>
-                            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name *</label>
+                            <input type="text" name="name" required style="width: 100%; padding: 0.75rem; background: var(--bg-elevated); border: 1px solid var(--border-primary); border-radius: var(--radius-md); color: var(--text-primary);">
                         </div>
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required placeholder="your.email@company.com">
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email *</label>
+                            <input type="email" name="email" required style="width: 100%; padding: 0.75rem; background: var(--bg-elevated); border: 1px solid var(--border-primary); border-radius: var(--radius-md); color: var(--text-primary);">
                         </div>
-                        <div class="form-group">
-                            <label for="company">Company</label>
-                            <input type="text" id="company" name="company" placeholder="Your Company Name">
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Company</label>
+                            <input type="text" name="company" style="width: 100%; padding: 0.75rem; background: var(--bg-elevated); border: 1px solid var(--border-primary); border-radius: var(--radius-md); color: var(--text-primary);">
                         </div>
-                        <div class="form-group">
-                            <label for="message">Message *</label>
-                            <textarea id="message" name="message" rows="5" required placeholder="Tell us about your industrial automation needs..."></textarea>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message *</label>
+                            <textarea name="message" required rows="5" style="width: 100%; padding: 0.75rem; background: var(--bg-elevated); border: 1px solid var(--border-primary); border-radius: var(--radius-md); color: var(--text-primary); resize: vertical;"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-large">
-                            <span>📧</span>
-                            Send Message
-                        </button>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
                     </form>
                 </div>
-                
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    <p>Ready to transform your industrial operations? Contact our team to discuss your specific needs and how our AI platform can help.</p>
+
+                <div class="support-card">
+                    <h3 class="support-title">Contact Information</h3>
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong>Email:</strong><br>
+                        <a href="mailto:tyler@verbitskysystems.com" style="color: var(--accent-green);">tyler@verbitskysystems.com</a>
+                    </div>
                     
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <div class="contact-icon">📧</div>
-                            <div class="contact-content">
-                                <strong>Email:</strong><br>
-                                <a href="mailto:tyler@verbitskysystems.com">tyler@verbitskysystems.com</a>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">⏱️</div>
-                            <div class="contact-content">
-                                <strong>Response Time:</strong><br>
-                                Within 24 hours
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">💬</div>
-                            <div class="contact-content">
-                                <strong>Consultation:</strong><br>
-                                Free initial assessment
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">🏭</div>
-                            <div class="contact-content">
-                                <strong>Specialization:</strong><br>
-                                Industrial automation & AI
-                            </div>
-                        </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <strong>Response Time:</strong><br>
+                        Within 24 hours
+                    </div>
+                    
+                    <div>
+                        <strong>Consultation:</strong><br>
+                        Free initial consultation available
                     </div>
                 </div>
             </div>
