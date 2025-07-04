@@ -1,11 +1,9 @@
 # .github/workflows/deploy.yml
 name: Deploy Verbitsky Systems Website
-
 on:
   push:
     branches: [ main ]
   workflow_dispatch: # Allows manual triggering
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -38,8 +36,11 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        timeout: 300000
-        log-level: verbose
+        protocol: ftps              # Use secure FTP
+        port: 21                    # Explicit port
+        timeout: 300000            # 5 minute timeout
+        log-level: verbose         # Detailed logging
+        security: strict           # Enhanced security
         local-dir: ./deploy/
         server-dir: /public_html/
         exclude: |
