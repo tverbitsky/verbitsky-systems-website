@@ -26,9 +26,15 @@ jobs:
         mkdir -p deploy/logs
         echo "Logs directory created" > deploy/logs/.gitkeep
         
-        # Verify files exist
-        echo "📁 Files to deploy:"
+        # Check deployment package size
+        echo "📊 Deployment package analysis:"
+        du -sh deploy/
+        echo "📁 File count:"
+        find deploy -type f | wc -l
+        echo "📋 Files to deploy:"
         find deploy -type f | head -20
+        echo "💾 Largest files:"
+        find deploy -type f -exec ls -lh {} \; | sort -k5 -hr | head -10
         
     - name: Deploy to cPanel via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -36,11 +42,42 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps              # Use secure FTP
-        port: 21                    # Explicit port
-        timeout: 300000            # 5 minute timeout
-        log-level: verbose         # Detailed logging
-        security: strict           # Enhanced security
+        protocol: ftp
+        port: 21
+        timeout: 60000             # Reduced to 1 minute
+        log-level: verbose
+        security: loose
+        dry-run: false
+        dangerous-clean-slate: false
+        local-dir: ./deploy/
+        server-dir: /public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/.env
+          **/README.md
+          **/.github/**
+          **/logs/*.log
+          
+    - name: Wait and retry if failed
+      if: failure()
+      run: |
+        echo "⏳ Waiting 30 seconds before retry..."
+        sleep 30
+        
+    - name: Retry deployment
+      if: failure()
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftp
+        port: 21
+        timeout: 120000            # 2 minutes for retry
+        log-level: verbose
+        security: loose
         local-dir: ./deploy/
         server-dir: /public_html/
         exclude: |
