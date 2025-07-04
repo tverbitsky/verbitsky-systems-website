@@ -812,6 +812,7 @@ p {
     display: flex;
     height: calc(100vh - 64px);
     background: var(--bg-secondary);
+    position: relative;
 }
 
 .chat-sidebar {
@@ -820,6 +821,43 @@ p {
     border-right: 1px solid var(--border-secondary);
     padding: var(--space-xl);
     overflow-y: auto;
+    transition: var(--transition);
+    transform: translateX(0);
+    position: relative;
+    z-index: 10;
+}
+
+.chat-sidebar.collapsed {
+    transform: translateX(-100%);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: var(--space-lg);
+    left: var(--space-lg);
+    width: 40px;
+    height: 40px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    z-index: 20;
+    font-size: 1.2rem;
+}
+
+.sidebar-toggle:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-green-border);
+    color: var(--accent-green);
 }
 
 .sidebar-section {
@@ -1948,6 +1986,11 @@ p {
         grid-template-columns: 1fr;
         gap: var(--space-2xl);
     }
+    
+    /* Tablet chat adjustments */
+    .chat-sidebar {
+        width: 250px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1997,10 +2040,25 @@ p {
 
     /* Mobile Chat Interface */
     .chat-sidebar {
-        display: none;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        bottom: 0;
+        width: 280px;
+        transform: translateX(-100%);
+        z-index: 100;
+        box-shadow: var(--shadow-lg);
     }
     
-    .mobile-chat-header {
+    .chat-sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .chat-main {
+        width: 100%;
+    }
+    
+    .sidebar-toggle {
         display: block;
     }
 
@@ -2077,6 +2135,13 @@ p {
     .contact-item {
         padding: var(--space-md);
         text-align: center;
+    }
+}
+
+/* Hide sidebar toggle on desktop */
+@media (min-width: 769px) {
+    .sidebar-toggle {
+        display: none;
     }
 }
 
