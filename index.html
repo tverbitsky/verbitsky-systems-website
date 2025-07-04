@@ -345,30 +345,25 @@
                         </div>
                     </div>
                 </div>
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message">
-                        <div class="message-avatar ai">AI</div>
-                        <div class="message-content">
-                            <strong>AI Diagnostics Assistant ready for industrial troubleshooting queries...</strong>
-                            <br><br>
-                            I can help with:
-                            <ul>
-                                <li>PLC programming and communication issues</li>
-                                <li>Motor drive configuration and diagnostics</li>
-                                <li>Safety system troubleshooting</li>
-                                <li>Sensor calibration and signal analysis</li>
-                                <li>SCADA system integration</li>
-                            </ul>
-                            What equipment issue can I help you diagnose today?
-                        </div>
-                    </div>
+                
+                <!-- Mobile Quick Prompts -->
+                <div class="mobile-prompts">
+                    <div class="mobile-prompt-chip" onclick="insertPrompt('PLC communication error troubleshooting')">🔧 PLC Issues</div>
+                    <div class="mobile-prompt-chip" onclick="insertPrompt('Motor overheating diagnosis')">⚡ Motor Problems</div>
+                    <div class="mobile-prompt-chip" onclick="insertPrompt('Safety system reset procedure')">🛡️ Safety Systems</div>
+                    <div class="mobile-prompt-chip" onclick="insertPrompt('Sensor calibration help')">📊 Sensor Issues</div>
                 </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be added here dynamically -->
+                </div>
+                
                 <div class="chat-input-container">
                     <div class="chat-input-wrapper">
                         <textarea 
                             id="chatInput" 
                             class="chat-input" 
-                            placeholder="Describe your equipment issue..."
+                            placeholder="Ask me about your industrial equipment..."
                             rows="1"
                         ></textarea>
                         <button class="chat-send" onclick="sendMessage()">
