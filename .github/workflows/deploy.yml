@@ -28,6 +28,30 @@ jobs:
         # Copy website files (excluding development files)
         cp -r css js php index.html robots.txt .htaccess deploy/ 2>/dev/null || true
         
+        # Add cache control to .htaccess for CSS/JS files
+        cat >> deploy/.htaccess << 'EOF'
+        
+        # Cache control for CSS and JS files
+        <FilesMatch "\.(css|js)$">
+            Header set Cache-Control "max-age=300, must-revalidate"
+            Header set Expires "access plus 5 minutes"
+        </FilesMatch>
+        
+        # Force revalidation of CSS/JS files
+        <FilesMatch "\.(css|js)$">
+            Header unset ETag
+            FileETag None
+        </FilesMatch>
+        EOF
+        
+        # Add cache-busting timestamp to CSS/JS files
+        timestamp=$(date +%s)
+        echo "🔄 Adding cache-busting timestamp: $timestamp"
+        
+        # Update references in HTML files to include timestamp
+        find deploy -name "*.html" -exec sed -i "s/\.css/\.css?v=$timestamp/g" {} \;
+        find deploy -name "*.html" -exec sed -i "s/\.js/\.js?v=$timestamp/g" {} \;
+        
         # Create logs directory
         mkdir -p deploy/logs
         echo "Logs directory created" > deploy/logs/.gitkeep
@@ -101,7 +125,7 @@ jobs:
         echo "🌐 Website URL: https://verbitskysystems.com"
         echo "⏰ Deployed at: $(date)"
         
-        # Optional: Test if website is accessible
+        # Add deployment verification timestamp
         echo "🔍 Testing website accessibility..."
         response=$(curl -s -o /dev/null -w "%{http_code}" https://verbitskysystems.com || echo "000")
         if [ "$response" = "200" ]; then
@@ -109,3 +133,21 @@ jobs:
         else
           echo "⚠️  Website returned HTTP $response (may take a few minutes to propagate)"
         fi
+        
+        # Check if files were actually uploaded by testing specific files
+        echo "🔍 Checking deployed files..."
+        
+        # Test main files exist
+        for file in "index.html" "css/style.css" "js/main.js"; do
+          url="https://verbitskysystems.com/$file"
+          status=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "000")
+          if [ "$status" = "200" ]; then
+            echo "✅ $file is accessible"
+          else
+            echo "❌ $file returned HTTP $status"
+          fi
+        done
+        
+        # Check if files have recent timestamps (basic cache busting)
+        echo "🕐 Checking file timestamps..."
+        curl -s -I "https://verbitskysystems.com/js/main.js" | grep -i "last-modified" || echo "No last-modified header found"
